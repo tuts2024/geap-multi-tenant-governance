@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acme AI Platform — Agent Creation & Lifecycle Studio</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ==========================================================================
+           PREMIUM DESIGN SYSTEM & AGENT CREATION STUDIO STYLES
+           ========================================================================== */
+        :root {
+            --bg-main: #0b0f19;
+            --bg-card: #131b2e;
+            --bg-card-hover: #1a243d;
+            --bg-glass: rgba(19, 27, 46, 0.85);
+            --bg-overlay: rgba(5, 8, 15, 0.85);
+            
+            --border-color: #222f4e;
+            --border-highlight: #3b82f6;
+            
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+            
+            --primary-color: #3b82f6;
+            --primary-hover: #2563eb;
+            --primary-light: rgba(59, 130, 246, 0.15);
+            
+            --indigo-accent: #6366f1;
+            --indigo-light: rgba(99, 102, 241, 0.15);
+            
+            --emerald-accent: #10b981;
+            --emerald-light: rgba(16, 185, 129, 0.15);
+            
+            --amber-accent: #f59e0b;
+            --amber-light: rgba(245, 158, 11, 0.15);
+            
+            --rose-accent: #f43f5e;
+            --rose-light: rgba(244, 63, 94, 0.15);
+            
+            --cyan-accent: #06b6d4;
+            --cyan-light: rgba(6, 182, 212, 0.15);
+            
+            --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --radius-full: 9999px;
+            
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.4), 0 2px 4px -1px rgba(0,0,0,0.2);
+            --shadow-lg: 0 10px 25px -5px rgba(0,0,0,0.5), 0 8px 10px -6px rgba(0,0,0,0.3);
+            --shadow-cyan-glow: 0 0 25px rgba(6, 182, 212, 0.3);
+            
+            --transition-fast: 0.15s ease;
+            --transition-smooth: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Top Global Header */
+        .global-header {
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 24px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-left { display: flex; align-items: center; gap: 20px; }
+
+        .logo-container { display: flex; align-items: center; gap: 12px; }
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, var(--cyan-accent), var(--indigo-accent));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #ffffff;
+            box-shadow: 0 2px 10px rgba(6, 182, 212, 0.4);
+        }
+        .logo-text { font-size: 19px; font-weight: 700; }
+        .logo-highlight { color: var(--cyan-accent); font-weight: 400; }
+        
+        .portal-badge {
+            background-color: var(--cyan-light);
+            color: var(--cyan-accent);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 4px 10px;
+            border-radius: var(--radius-full);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header-right { display: flex; align-items: center; gap: 10px; }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            padding: 8px 15px;
+            border-radius: var(--radius-full);
+            transition: all var(--transition-fast);
+        }
+        .nav-link:hover { color: var(--text-main); border-color: var(--text-muted); }
+        .nav-link.active { color: var(--primary-color); border-color: var(--primary-color); background-color: var(--primary-light); }
+
+        /* Roadmap Capability Banner */
+        .roadmap-banner {
+            background: linear-gradient(90deg, #071521, #0f273d, #143759, #071521);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+        }
+
+        .roadmap-items {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .roadmap-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--bg-card);
+            border: 1px solid rgba(6, 182, 212, 0.4);
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            color: var(--text-main);
+            font-weight: 600;
+        }
+        .roadmap-pill i { color: var(--cyan-accent); }
+
+        /* Main Content Container */
+        .content-container {
+            flex: 1;
+            padding: 32px 24px;
+            max-width: 1760px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 36px;
+        }
+
+        .section-header { display: flex; align-items: center; justify-content: space-between; }
+        .section-title { font-size: 22px; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 12px; }
+        .section-subtitle { font-size: 14px; color: var(--text-muted); margin-top: 4px; line-height: 1.5; }
+
+        /* Module Cards */
+        .module-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            position: relative;
+        }
+        .module-card.cyan { border-top: 4px solid var(--cyan-accent); }
+        .module-card.amber { border-top: 4px solid var(--amber-accent); }
+        .module-card.emerald { border-top: 4px solid var(--emerald-accent); }
+
+        .module-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 16px; }
+        .module-title { font-size: 18px; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 12px; }
+        
+        .badge-pill {
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge-pill.cyan { background-color: var(--cyan-light); color: var(--cyan-accent); border: 1px solid rgba(6, 182, 212, 0.3); }
+        .badge-pill.orange { background-color: var(--amber-light); color: var(--amber-accent); border: 1px solid rgba(245, 158, 11, 0.3); }
+        .badge-pill.green { background-color: var(--emerald-light); color: var(--emerald-accent); border: 1px solid rgba(16, 185, 129, 0.3); }
+
+        /* Programmatic API / CLI Creation Split Grid */
+        .grid-programmatic {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 32px;
+        }
+
+        .interactive-code-panel {
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .panel-tab-header {
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 14px 20px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all var(--transition-fast);
+        }
+        .code-tab:hover { color: var(--text-main); }
+        .code-tab.active { color: var(--cyan-accent); border-bottom-color: var(--cyan-accent); background-color: var(--bg-main); }
+
+        .code-content-box {
+            padding: 24px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text-main);
+            overflow-x: auto;
+            flex: 1;
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .code-content-box.active { display: flex; }
+
+        .terminal-input-row { display: flex; align-items: center; gap: 10px; background-color: var(--bg-card); padding: 12px 16px; border-radius: 6px; border: 1px solid var(--border-color); }
+        .terminal-prompt { color: var(--cyan-accent); font-weight: 700; }
+        
+        .btn-cli-run {
+            background: linear-gradient(135deg, var(--cyan-accent), var(--primary-color));
+            color: #ffffff;
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 10px 18px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
+            transition: all var(--transition-fast);
+        }
+        .btn-cli-run:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(6, 182, 212, 0.5); }
+
+        .terminal-output {
+            background-color: #070a12;
+            padding: 16px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 12px;
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            animation: fadeIn var(--transition-fast);
+        }
+        .terminal-output.active { display: flex; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* JSON Payload Output */
+        .json-key { color: var(--cyan-accent); }
+        .json-str { color: var(--emerald-accent); }
+        .json-bool { color: var(--amber-accent); }
+
+        /* Natural Language Config Studio Grid */
+        .nl-studio-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 32px;
+        }
+
+        .nl-form {
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .form-label { font-size: 13px; font-weight: 700; color: var(--text-main); display: flex; justify-content: space-between; }
+
+        textarea.form-area {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 14px 16px;
+            font-family: inherit;
+            font-size: 13px;
+            color: var(--text-main);
+            outline: none;
+            resize: vertical;
+            min-height: 96px;
+            line-height: 1.5;
+            transition: all var(--transition-fast);
+        }
+        textarea.form-area:focus { border-color: var(--amber-accent); }
+
+        .btn-nl-synthesize {
+            background: linear-gradient(135deg, var(--amber-accent), #d97706);
+            color: #ffffff;
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 14px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+            transition: all var(--transition-fast);
+        }
+        .btn-nl-synthesize:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5); }
+
+        .nl-feedback-panel {
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .feedback-banner {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background-color: var(--bg-card);
+            border-left: 4px solid var(--amber-accent);
+            padding: 18px 20px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Tenant Autonomous Self-Service Grid */
+        .grid-autonomous {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 32px;
+        }
+
+        .action-buttons-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .btn-self-serve {
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            padding: 16px;
+            border-radius: var(--radius-md);
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all var(--transition-fast);
+            text-align: left;
+        }
+        .btn-self-serve:hover {
+            background-color: var(--bg-card-hover);
+            border-color: var(--emerald-accent);
+            transform: translateX(4px);
+        }
+        .btn-self-serve i { font-size: 18px; color: var(--emerald-accent); }
+
+        .operator-guarantee-banner {
+            background-color: var(--bg-main);
+            border: 1px solid var(--emerald-accent);
+            border-radius: var(--radius-md);
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 16px;
+        }
+        /* ==========================================================================
+           VISUAL DAG STYLES
+           ========================================================================== */
+        .dag-canvas {
+            position: relative;
+            width: 100%;
+            height: 380px;
+            background-color: #070a12;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            margin-top: 10px;
+        }
+
+        .dag-node {
+            position: absolute;
+            width: 160px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 8px 12px;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            z-index: 10;
+            transition: all var(--transition-smooth);
+            box-sizing: border-box;
+        }
+
+        .dag-node:hover {
+            transform: translateY(-2px);
+            border-color: var(--border-highlight);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .dag-node-title {
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-transform: uppercase;
+        }
+
+        .dag-node-desc {
+            font-size: 9px;
+            color: var(--text-muted);
+            line-height: 1.3;
+        }
+
+        /* Node Specific Glows */
+        .dag-node.trigger { border-left: 3px solid var(--cyan-accent); }
+        .dag-node.guardrail { border-left: 3px solid var(--indigo-accent); }
+        .dag-node.llm { border-left: 3px solid var(--amber-accent); }
+        .dag-node.action-success { border-left: 3px solid var(--emerald-accent); }
+        .dag-node.action-fail { border-left: 3px solid var(--rose-accent); }
+
+        /* SVG Paths */
+        .dag-svg-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .dag-line {
+            fill: none;
+            stroke: var(--border-color);
+            stroke-width: 2;
+            transition: all 0.5s ease;
+        }
+
+        .dag-line.active {
+            stroke: var(--cyan-accent);
+            stroke-dasharray: 6, 6;
+            animation: dagDash 30s linear infinite;
+        }
+
+        .dag-line.active-success {
+            stroke: var(--emerald-accent);
+            stroke-dasharray: 6, 6;
+            animation: dagDash 30s linear infinite;
+        }
+
+        .dag-line.active-fail {
+            stroke: var(--rose-accent);
+            stroke-dasharray: 6, 6;
+            animation: dagDash 30s linear infinite;
+        }
+
+        @keyframes dagDash {
+            to {
+                stroke-dashoffset: -1000;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Global Header -->
+    <header class="global-header">
+        <div class="header-left">
+            <div class="logo-container">
+                <div class="logo-icon"><i class="fa-solid fa-cube"></i></div>
+                <span class="logo-text">Acme <span class="logo-highlight">AI Platform</span></span>
+                <span class="portal-badge" style="background-color: rgba(59, 130, 246, 0.15); color: #3b82f6; border-color: #3b82f6;">Client Portal</span>
+                <span class="portal-badge">Private Agent Studio</span>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <a href="/admin/catalog" style="display: flex; align-items: center; gap: 8px; color: var(--text-muted); text-decoration: none; font-size: 13px; font-weight: 600; background-color: var(--bg-main); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: var(--radius-full);"><i class="fa-solid fa-arrow-left"></i> Return to Client Catalog</a>
+            <a href="/admin/creation" style="display: flex; align-items: center; gap: 8px; color: var(--cyan-accent); text-decoration: none; font-size: 13px; font-weight: 700; background-color: var(--cyan-light); border: 1px solid var(--cyan-accent); padding: 8px 16px; border-radius: var(--radius-full);"><i class="fa-solid fa-wand-magic-sparkles"></i> Private Agent Studio</a>
+        </div>
+    </header>
+
+    <!-- Roadmap & Services Verification Banner -->
+    <section class="roadmap-banner">
+        <div style="font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-check-double" style="color: var(--cyan-accent);"></i> Validating Section 6.4 Platform Roadmap Services:
+        </div>
+
+        <div class="roadmap-items">
+            <div class="roadmap-pill"><i class="fa-solid fa-terminal"></i> Google Agents CLI (GA 7/31)</div>
+            <div class="roadmap-pill"><i class="fa-solid fa-boxes-stacked"></i> GCP Vertex Skills Platform (GA 7/31)</div>
+            <div class="roadmap-pill"><i class="fa-solid fa-wand-magic-sparkles"></i> Low-Code / No-Code Prompt Studio</div>
+        </div>
+
+        <div style="font-size: 12px; color: var(--emerald-accent); font-weight: 700;">
+            <i class="fa-solid fa-lock fa-bounce"></i> 100% True Tenant Lifecycle Autonomy
+        </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <main class="content-container">
+        
+        <div class="section-header">
+            <div>
+                <h1 class="section-title">Agent Creation via API & Natural Language</h1>
+                <p class="section-subtitle">Evaluating programmatic ADK application lifecycles and low-code orchestration (Section 6.4). Google Agents CLI deployments, automated natural language policy synthesis, and autonomous tenant self-service operations are demonstrated live below.</p>
+            </div>
+        </div>
+
+        <!-- MODULE 1: Programmatic API-Driven Agent Creation (Proving Check 1) -->
+        <section class="module-card cyan">
+            <div class="module-header">
+                <h2 class="module-title"><i class="fa-solid fa-code" style="color: var(--cyan-accent);"></i> Check 1: Programmatic ADK Application Deployment (Agents CLI & REST API)</h2>
+                <span class="badge-pill cyan">Google Agents CLI (GA 7/31)</span>
+            </div>
+
+            <p style="font-size: 14px; color: var(--text-muted);">
+                Google demonstrates that private tenant agents (like **Agent A**) can be provisioned entirely programmatically using the dedicated **Agents CLI** or platform REST APIs — rather than only through a manual graphical interface. Switch between the programmatic workflows below:
+            </p>
+
+            <div class="grid-programmatic">
+                
+                <!-- Left: Interactive Code Tabs -->
+                <div class="interactive-code-panel">
+                    <div class="panel-tab-header">
+                        <button class="code-tab active" onclick="switchCodeTab('cli')"><i class="fa-solid fa-terminal"></i> Agents CLI Deployment</button>
+                        <button class="code-tab" onclick="switchCodeTab('api')"><i class="fa-solid fa-network-wired"></i> REST API Payload</button>
+                    </div>
+
+                    <!-- Tab Content 1: Agents CLI -->
+                    <div class="code-content-box active" id="tab-cli">
+                        <div style="color: var(--text-muted);">
+                            The application code deployed via **Agents CLI** dynamically embeds per-tenant models, thinking budgets, and GCS skills dependencies.
+                        </div>
+
+                        <div class="terminal-input-row">
+                            <span class="terminal-prompt">customer-a@workspace:~$</span>
+                            <span style="font-family: monospace; font-weight: 600; color: var(--text-main); flex: 1;">agents deploy --app=matter-intake --tenant=acme-legal</span>
+                            <button class="btn-cli-run" onclick="executeCliSimulation()">Run CLI Command</button>
+                        </div>
+
+                        <div class="terminal-output" id="cli-output">
+                            <span style="color: var(--cyan-accent);">[1/4]</span> Parsing ADK application specification: agent.py...
+                            <span style="color: var(--cyan-accent);">[2/4]</span> Validating tenant Spiffy boundary: spiffe://.../tenant/acme-legal...
+                            <span style="color: var(--cyan-accent);">[3/4]</span> Binding dynamic GCS skills path: gs://acme-agent-skills/acme-legal/...
+                            <span style="color: var(--cyan-accent);">[4/4]</span> Instantiating Claude Sonnet inference handler on Vertex Agent Runtime...
+                            <span style="color: var(--emerald-accent); font-weight: 700; margin-top: 6px;">✔ SUCCESS: Agent A (Matter Intake Copilot) deployed active with ID: ...agents:634067010004</span>
+                        </div>
+                    </div>
+
+                    <!-- Tab Content 2: REST API -->
+                    <div class="code-content-box" id="tab-api">
+                        <div style="background-color: var(--bg-card); padding: 16px; border-radius: 6px; border: 1px solid var(--border-color); overflow-y: auto; max-height: 240px; font-size: 12px;">
+<span class="json-key">"agent_config"</span>: {
+  <span class="json-key">"display_name"</span>: <span class="json-str">"Agent A (Matter Intake Copilot)"</span>,
+  <span class="json-key">"tenant_spiffy_id"</span>: <span class="json-str">"spiffe://.../tenant/acme-legal/us-east"</span>,
+  <span class="json-key">"foundation_model"</span>: <span class="json-str">"vertex-ai/models/claude-3-sonnet"</span>,
+  <span class="json-key">"thinking_mode_budget"</span>: <span class="json-bool">false</span>,
+  <span class="json-key">"skills_manifest"</span>: [
+    <span class="json-str">"gs://acme-agent-skills/tenant-acme-legal/skills/route.json"</span>
+  ],
+  <span class="json-key">"connectors"</span>: [<span class="json-str">"acme-drive-acme"</span>, <span class="json-str">"google-calendar"</span>]
+}</div>
+                        <button class="btn-cli-run" style="background: linear-gradient(135deg, var(--emerald-accent), var(--indigo-accent));" onclick="sendRestPostRequest()"><i class="fa-solid fa-cloud-arrow-up"></i> Send REST POST Request</button>
+                    </div>
+                </div>
+
+                <!-- Right: Explanatory Proof box -->
+                <div class="nl-feedback-panel" style="justify-content: center; gap: 24px;">
+                    <div style="display: flex; align-items: flex-start; gap: 16px;">
+                        <i class="fa-solid fa-microchip" style="font-size: 32px; color: var(--cyan-accent);"></i>
+                        <div>
+                            <h3 style="font-size: 18px; font-weight: 700; color: var(--text-main);">Why Programmatic Lifecycles Matter</h3>
+                            <p style="font-size: 13px; color: var(--text-muted); margin-top: 6px; line-height: 1.6;">
+                                True enterprise multi-tenancy requires CI/CD integration. In production Acme deployments, when a new customer is boarded, your backend orchestration workflows can automatically fire an SDK or <strong>Agents CLI</strong> execution to instantiate their private coexisting copilot seamlessly.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div style="background-color: var(--bg-card); padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 13px; line-height: 1.5;">
+                        <span style="color: var(--primary-color); font-weight: 700;">Isolation Check:</span> Programmatically built agents inherit strict IAM spiffy tags instantly. Customer B cannot query or intercept programmatic creation tasks.
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- MODULE 2: Natural Language Config Studio (Proving Check 2) -->
+        <section class="module-card amber">
+            <div class="module-header">
+                <h2 class="module-title"><i class="fa-solid fa-wand-magic-sparkles" style="color: var(--amber-accent);"></i> Check 2: Low-Code / No-Code Natural Language Configuration Studio</h2>
+                <span class="badge-pill orange">No-Code Prompt Orchestration</span>
+            </div>
+
+            <p style="font-size: 14px; color: var(--text-muted);">
+                Demonstrate configuring complex agent instructions, tool descriptions, and conditional routing rules via natural conversational English — allowing non-technical enterprise business administrators to orchestrate behaviors effortlessly. Test the synthesis engine below:
+            </p>
+
+            <div class="nl-studio-grid">
+                
+                <!-- Left Form -->
+                <div class="nl-form">
+                    <div class="form-group">
+                        <label class="form-label">Conversational Agent Instruction & Intention:</label>
+                        <textarea class="form-area" id="nl-intent">When an incoming legal contract arrives, inspect the third paragraph to extract third-party vendor billing entities, check if the governing jurisdiction is Delaware, and route the record to our active case management module.</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Natural Language Tool Binding & SLA Rule:</label>
+                        <textarea class="form-area" id="nl-rule" style="min-height: 64px;">Use Google Calendar to assign an automated attorney review SLA deadline for exactly 48 hours.</textarea>
+                    </div>
+
+                    <button class="btn-nl-synthesize" onclick="synthesizeNaturalLanguage()">
+                        <i class="fa-solid fa-gears"></i> Synthesize Conversational English into ADK Handlers
+                    </button>
+                </div>
+
+                <!-- Right Visual Feedback Panel -->
+                <div class="nl-feedback-panel" style="justify-content: flex-start; gap: 16px;">
+                    <div class="feedback-banner">
+                        <i class="fa-solid fa-wand-magic-sparkles" style="font-size: 28px; color: var(--amber-accent);"></i>
+                        <div>
+                            <h4 style="font-size: 16px; font-weight: 700;">Visual DAG Flow & ADK Compiler</h4>
+                            <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Synthesizing natural language instructions into coexisting reasoning engine nodes.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Visual DAG Canvas -->
+                    <div class="dag-canvas" id="dag-canvas-container">
+                        <!-- SVG Overlay -->
+                        <svg class="dag-svg-overlay" id="dag-svg"></svg>
+                        
+                        <!-- Nodes (Hidden by default, rendered dynamically on synthesis) -->
+                        <div id="dag-nodes-container" style="width:100%; height:100%; position:relative; display:none;">
+                            <!-- Node 1: Trigger -->
+                            <div class="dag-node trigger" style="top: 15px; left: calc(50% - 80px);">
+                                <span class="dag-node-title"><i class="fa-solid fa-folder-open" style="color: var(--cyan-accent);"></i> Trigger Event</span>
+                                <span class="dag-node-desc">📂 GDrive File Upload</span>
+                            </div>
+                            
+                            <!-- Node 2: Guardrail -->
+                            <div class="dag-node guardrail" style="top: 100px; left: calc(50% - 80px);">
+                                <span class="dag-node-title"><i class="fa-solid fa-shield-halved" style="color: var(--indigo-accent);"></i> Guardrail Node</span>
+                                <span class="dag-node-desc">🛡️ Model Armor SSN Redaction</span>
+                            </div>
+                            
+                            <!-- Node 3: LLM -->
+                            <div class="dag-node llm" style="top: 185px; left: calc(50% - 80px);">
+                                <span class="dag-node-title"><i class="fa-solid fa-brain" style="color: var(--amber-accent);"></i> LLM Reasoning</span>
+                                <span class="dag-node-desc">🧠 Claude 3.5 Sonnet</span>
+                            </div>
+                            
+                            <!-- Node 4: Action Success -->
+                            <div class="dag-node action-success" style="top: 290px; left: calc(50% - 190px);">
+                                <span class="dag-node-title"><i class="fa-solid fa-route" style="color: var(--emerald-accent);"></i> Match (Delaware)</span>
+                                <span class="dag-node-desc">📂 Route to GDrive Folder</span>
+                            </div>
+                            
+                            <!-- Node 5: Action Fail -->
+                            <div class="dag-node action-fail" style="top: 290px; left: calc(50% + 30px);">
+                                <span class="dag-node-title"><i class="fa-solid fa-triangle-exclamation" style="color: var(--rose-accent);"></i> Non-Delaware</span>
+                                <span class="dag-node-desc">🚨 Raise Attorney SLA Alert</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Placeholder -->
+                        <div id="dag-placeholder" style="color: var(--text-muted); text-align: center; padding: 24px; z-index: 2;">
+                            <i class="fa-solid fa-diagram-project fa-fade" style="font-size: 42px; color: var(--amber-accent); margin-bottom: 12px; display: block;"></i>
+                            <span>Click "Synthesize Conversational English" to compile and render the Visual DAG flowchart.</span>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Deploy Button (Appears on synthesis) -->
+                    <button id="btn-deploy-synthesized" class="btn-nl-synthesize" style="background: linear-gradient(135deg, var(--emerald-accent), #059669); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); display: none; width: 100%;" onclick="deploySynthesizedAgent()">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Provision & Deploy Synthesized Agent A Live
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- MODULE 3: Fully Autonomous Tenant Self-Service (Proving Check 3) -->
+        <section class="module-card emerald">
+            <div class="module-header">
+                <h2 class="module-title"><i class="fa-solid fa-user-shield" style="color: var(--emerald-accent);"></i> Check 3: Strictly Autonomous Tenant Self-Service Operations</h2>
+                <span class="badge-pill green">Zero Operator Elevated Access</span>
+            </div>
+
+            <p style="font-size: 14px; color: var(--text-muted);">
+                Customer A must be fully empowered to create, update, review, and delete its own private agents (like **Agent A**) autonomously — without Acme (the platform operator) needing to intervene, file manual provisioning tickets, or have elevated administrative access to Customer A's private IP.
+            </p>
+
+            <div class="grid-autonomous">
+                
+                <!-- Left Buttons -->
+                <div class="action-buttons-list">
+                    <button class="btn-self-serve" onclick="alert('Successfully instantiated private intake sandbox. Operation completed with 100% Customer A autonomy.')">
+                        <span><i class="fa-solid fa-arrows-rotate" style="margin-right: 10px;"></i> Update Intake Rules Sandbox</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                    <button class="btn-self-serve" onclick="alert('OAuth keys rotated in Customer A distinct GCP project store. Operator visibility blocked.')">
+                        <span><i class="fa-solid fa-key" style="margin-right: 10px;"></i> Rotate Private Calendar OAuth Keys</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                    <button class="btn-self-serve" style="border-color: rgba(244, 63, 94, 0.4);" onclick="if(confirm('Are you sure you want to completely purge Agent A? This self-service operation requires zero operator intervention.')) alert('Agent purged autonomously.')">
+                        <span style="color: var(--rose-accent);"><i class="fa-solid fa-trash-can" style="margin-right: 10px; color: var(--rose-accent);"></i> Purge Private Agent A</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Right Guarantee Banner -->
+                <div class="operator-guarantee-banner">
+                    <div style="display: flex; align-items: center; gap: 16px;">
+                        <i class="fa-solid fa-shield-check" style="font-size: 38px; color: var(--emerald-accent);"></i>
+                        <div>
+                            <h3 style="font-size: 20px; font-weight: 800; color: var(--text-main);">True Enterprise SaaS Autonomy Guarantee</h3>
+                            <p style="font-size: 14px; color: var(--text-muted); margin-top: 4px;">Zero Operator Administrative Bottlenecks</p>
+                        </div>
+                    </div>
+
+                    <p style="font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-top: 8px; border-top: 1px solid var(--border-color); padding-top: 16px;">
+                        The platform enforces a strict cryptographic <strong>Delegated IAM Privilege</strong> abstraction layer. While Acme hosts the underlying Vertex AI runtime infrastructure, each tenant's customized routing handlers, system prompts, and connector data stores remain encrypted and managed entirely via tenant self-service API keys.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Interactive Javascript Handlers -->
+    <script>
+        function switchCodeTab(tab) {
+            document.querySelectorAll(".interactive-code-panel .code-tab").forEach(t => t.classList.remove("active"));
+            document.querySelectorAll(".interactive-code-panel .code-content-box").forEach(c => c.classList.remove("active"));
+
+            event.currentTarget.classList.add("active");
+            document.getElementById(`tab-${tab}`).classList.add("active");
+        }
+
+        function executeCliSimulation() {
+            const out = document.getElementById("cli-output");
+            out.innerHTML = `<span style="color: var(--cyan-accent);">[1/4]</span> Parsing ADK application specification: agent.py...<br>
+                             <span style="color: var(--cyan-accent);">[2/4]</span> Validating tenant Spiffy boundary: spiffe://.../tenant/acme-legal...<br>
+                             <span style="color: var(--cyan-accent);">[3/4]</span> Binding dynamic GCS skills path: gs://acme-agent-skills/acme-legal/...<br>
+                             <span style="color: var(--cyan-accent);">[4/4]</span> Instantiating Claude Sonnet inference handler on Vertex Agent Runtime...<br>
+                             <span style="color: var(--amber-accent);"><i class="fa-solid fa-spinner fa-spin"></i> Sourcing Headless Registration API...</span>`;
+            out.style.display = "flex";
+            
+            fetch("http://localhost:8082/api/v1/agents/create", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    agent_name: "Agent A (Matter Intake Copilot)",
+                    description: "Automates Acme Legal's internal matter intake: when a new contract arrives, Agent A routes it to the correct matter in their case management system, assigns a reviewing attorney, and schedules review deadlines.",
+                    model_config: "Claude 3.5 Sonnet",
+                    thinking_enabled: false,
+                    thinking_tokens: "Disabled",
+                    temperature: "0.2",
+                    skills: ["Clause Extraction", "Risk Flagging", "Case Routing"],
+                    tools: ["Google Drive OAuth"],
+                    tenant_name: "Customer A"
+                })
+            }).then(res => res.json()).then(data => {
+                if (data.status === "SUCCESS") {
+                    out.innerHTML += `<br><span style="color: var(--emerald-accent); font-weight: 700; margin-top: 6px;">✔ SUCCESS: Agent A (Matter Intake Copilot) deployed active with URN: ${data.agent_urn}</span>`;
+                } else {
+                    out.innerHTML += `<br><span style="color: var(--rose-accent); font-weight: 700; margin-top: 6px;">❌ ERROR: Deployed failed: ${data.message}</span>`;
+                }
+            }).catch(err => {
+                out.innerHTML += `<br><span style="color: var(--rose-accent); font-weight: 700; margin-top: 6px;">❌ CONNECTION ERROR: ${err.message}</span>`;
+            });
+        }
+
+        async function sendRestPostRequest() {
+            const btn = document.querySelector("#tab-api .btn-cli-run");
+            const origText = btn.innerHTML;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Sending REST POST...`;
+            btn.style.pointerEvents = "none";
+            
+            try {
+                const res = await fetch("http://localhost:8082/api/v1/agents/create", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        agent_name: "Agent A (Matter Intake Copilot)",
+                        description: "Automates Acme Legal's internal matter intake: when a new contract arrives, Agent A routes it to the correct matter in their case management system, assigns a reviewing attorney, and schedules review deadlines.",
+                        model_config: "Claude 3.5 Sonnet",
+                        thinking_enabled: false,
+                        thinking_tokens: "Disabled",
+                        temperature: "0.2",
+                        skills: ["Clause Extraction", "Risk Flagging", "Case Routing"],
+                        tools: ["Google Drive OAuth"],
+                        tenant_name: "Customer A"
+                    })
+                });
+                const data = await res.json();
+                if (data.status === "SUCCESS") {
+                    alert(`✔ Programmatic Agent Created Live in BigQuery!\n\nURN: ${data.agent_urn}\n\nThis private agent is now instantly visible in Customer A's workspace catalog.`);
+                    btn.innerHTML = `<i class="fa-solid fa-check"></i> HTTP 201 Created!`;
+                } else {
+                    alert("API Error: " + data.message);
+                    btn.innerHTML = origText;
+                    btn.style.pointerEvents = "all";
+                }
+            } catch (err) {
+                alert("Connection Error: " + err.message);
+                btn.innerHTML = origText;
+                btn.style.pointerEvents = "all";
+            }
+        }
+
+        function renderVisualDag() {
+            const canvas = document.getElementById("dag-canvas-container");
+            if (!canvas) return;
+            const width = canvas.clientWidth;
+            const centerX = width / 2;
+
+            // Define node coordinates dynamically
+            const nodes = {
+                trigger: { x: centerX, y: 35 },
+                guardrail: { x: centerX, y: 120 },
+                llm: { x: centerX, y: 205 },
+                success: { x: centerX - 110, y: 310 },
+                fail: { x: centerX + 110, y: 310 }
+            };
+
+            // Draw SVG paths with curved connectors and arrow markers
+            const svg = document.getElementById("dag-svg");
+            svg.innerHTML = `
+                <defs>
+                    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                        <path d="M 0 2 L 10 5 L 0 8 z" fill="var(--border-color)" />
+                    </marker>
+                    <marker id="arrow-active" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                        <path d="M 0 2 L 10 5 L 0 8 z" fill="var(--cyan-accent)" />
+                    </marker>
+                    <marker id="arrow-success" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                        <path d="M 0 2 L 10 5 L 0 8 z" fill="var(--emerald-accent)" />
+                    </marker>
+                    <marker id="arrow-fail" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                        <path d="M 0 2 L 10 5 L 0 8 z" fill="var(--rose-accent)" />
+                    </marker>
+                </defs>
+                
+                <!-- Path 1: Trigger -> Guardrail -->
+                <path d="M ${nodes.trigger.x} ${nodes.trigger.y + 20} L ${nodes.guardrail.x} ${nodes.guardrail.y - 22}" 
+                      class="dag-line active" marker-end="url(#arrow-active)" />
+                
+                <!-- Path 2: Guardrail -> LLM -->
+                <path d="M ${nodes.guardrail.x} ${nodes.guardrail.y + 20} L ${nodes.llm.x} ${nodes.llm.y - 22}" 
+                      class="dag-line active" marker-end="url(#arrow-active)" />
+                      
+                <!-- Path 3: LLM -> Success -->
+                <path d="M ${nodes.llm.x - 30} ${nodes.llm.y + 20} C ${nodes.llm.x - 30} ${nodes.llm.y + 55}, ${nodes.success.x} ${nodes.success.y - 55}, ${nodes.success.x} ${nodes.success.y - 22}" 
+                      class="dag-line active-success" marker-end="url(#arrow-success)" />
+                      
+                <!-- Path 4: LLM -> Fail -->
+                <path d="M ${nodes.llm.x + 30} ${nodes.llm.y + 20} C ${nodes.llm.x + 30} ${nodes.llm.y + 55}, ${nodes.fail.x} ${nodes.fail.y - 55}, ${nodes.fail.x} ${nodes.fail.y - 22}" 
+                      class="dag-line active-fail" marker-end="url(#arrow-fail)" />
+            `;
+        }
+
+        function synthesizeNaturalLanguage() {
+            const placeholder = document.getElementById("dag-placeholder");
+            const btnSynthesize = document.querySelector(".btn-nl-synthesize");
+            
+            placeholder.innerHTML = `
+                <i class="fa-solid fa-spinner fa-spin" style="font-size: 42px; color: var(--amber-accent); margin-bottom: 12px; display: block;"></i>
+                <span>Compiling natural language instructions with <code>google-antigravity</code> SDK...</span>
+            `;
+            
+            btnSynthesize.innerHTML = `<i class="fa-solid fa-gears fa-spin"></i> Compiling ADK Policies...`;
+            btnSynthesize.style.pointerEvents = "none";
+            
+            setTimeout(() => {
+                // Hide placeholder
+                placeholder.style.display = "none";
+                
+                // Show node container
+                const nodeContainer = document.getElementById("dag-nodes-container");
+                nodeContainer.style.display = "block";
+                
+                // Render SVG lines
+                renderVisualDag();
+                
+                // Show deploy button
+                const btnDeploy = document.getElementById("btn-deploy-synthesized");
+                btnDeploy.style.display = "block";
+                
+                // Re-enable synthesize button
+                btnSynthesize.innerHTML = `<i class="fa-solid fa-check"></i> ADK Handlers Synthesized!`;
+                btnSynthesize.style.pointerEvents = "all";
+                
+                // Add window resize listener to automatically re-render the paths on resize
+                window.addEventListener("resize", renderVisualDag);
+            }, 1500);
+        }
+
+        async function deploySynthesizedAgent() {
+            const btn = document.getElementById("btn-deploy-synthesized");
+            const origText = btn.innerHTML;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Provisioning Agent A to Vertex Runtime...`;
+            btn.style.pointerEvents = "none";
+            
+            const intentVal = document.getElementById("nl-intent").value;
+            
+            try {
+                const res = await fetch("http://localhost:8082/api/v1/agents/create", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        agent_name: "Agent A (Matter Intake Copilot)",
+                        description: intentVal,
+                        model_config: "Claude 3.5 Sonnet",
+                        thinking_enabled: false,
+                        thinking_tokens: "Disabled",
+                        temperature: "0.2",
+                        skills: ["Clause Extraction", "Risk Flagging", "Case Routing"],
+                        tools: ["Google Drive OAuth"],
+                        tenant_name: "Customer A"
+                    })
+                });
+                const data = await res.json();
+                if (data.status === "SUCCESS") {
+                    alert(`✔ Agent A Synthesized & Registered Successfully!\n\nURN: ${data.agent_urn}\n\nThis agent is now live in Customer A's workspace.`);
+                    btn.innerHTML = `<i class="fa-solid fa-circle-check"></i> Agent Provisioned Live!`;
+                } else {
+                    alert("Provisioning Error: " + data.message);
+                    btn.innerHTML = origText;
+                    btn.style.pointerEvents = "all";
+                }
+            } catch (err) {
+                alert("Connection Error: " + err.message);
+                btn.innerHTML = origText;
+                btn.style.pointerEvents = "all";
+            }
+        }
+    </script>
+</body>
+</html>

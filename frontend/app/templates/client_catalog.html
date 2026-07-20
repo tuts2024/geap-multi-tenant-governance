@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acme Enterprise AI Platform — Client Agent Catalog</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ==========================================================================
+           PREMIUM DESIGN SYSTEM & CLIENT CATALOG STYLES
+           ========================================================================== */
+        :root {
+            --bg-main: #0b0f19;
+            --bg-card: #131b2e;
+            --bg-card-hover: #1a243d;
+            --bg-glass: rgba(19, 27, 46, 0.85);
+            --bg-overlay: rgba(5, 8, 15, 0.85);
+            
+            --border-color: #222f4e;
+            --border-highlight: #3b82f6;
+            
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+            
+            --primary-color: #3b82f6;
+            --primary-hover: #2563eb;
+            --primary-light: rgba(59, 130, 246, 0.15);
+            
+            --indigo-accent: #6366f1;
+            --indigo-light: rgba(99, 102, 241, 0.15);
+            
+            --emerald-accent: #10b981;
+            --emerald-light: rgba(16, 185, 129, 0.15);
+            
+            --amber-accent: #f59e0b;
+            --amber-light: rgba(245, 158, 11, 0.15);
+            
+            --rose-accent: #f43f5e;
+            --rose-light: rgba(244, 63, 94, 0.15);
+            
+            --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --radius-full: 9999px;
+            
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.4), 0 2px 4px -1px rgba(0,0,0,0.2);
+            --shadow-lg: 0 10px 25px -5px rgba(0,0,0,0.5), 0 8px 10px -6px rgba(0,0,0,0.3);
+            --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.25);
+            --shadow-rose-glow: 0 0 20px rgba(244, 63, 94, 0.25);
+            
+            --transition-fast: 0.15s ease;
+            --transition-smooth: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Top Header */
+        .global-header {
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 24px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-left { display: flex; align-items: center; gap: 20px; }
+
+        .logo-container { display: flex; align-items: center; gap: 12px; }
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, var(--emerald-accent), var(--primary-color));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #ffffff;
+            box-shadow: 0 2px 10px rgba(16, 185, 129, 0.4);
+        }
+        .logo-text { font-size: 19px; font-weight: 700; }
+        .logo-highlight { color: var(--emerald-accent); font-weight: 400; }
+        
+        .portal-badge {
+            background-color: var(--emerald-light);
+            color: var(--emerald-accent);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 4px 10px;
+            border-radius: var(--radius-full);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header-right { display: flex; align-items: center; gap: 16px; }
+
+        .switch-admin-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: var(--radius-full);
+            transition: all var(--transition-fast);
+        }
+        .switch-admin-link:hover {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            transform: translateY(-1px);
+        }
+
+        /* Interactive Persona Selector */
+        .persona-selector-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-highlight);
+            padding: 6px 8px 6px 16px;
+            border-radius: var(--radius-full);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
+        }
+
+        .persona-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .persona-pills {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .persona-pill {
+            background-color: transparent;
+            border: 1px solid transparent;
+            color: var(--text-muted);
+            padding: 6px 16px;
+            border-radius: var(--radius-full);
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all var(--transition-fast);
+        }
+        
+        .persona-pill:hover {
+            color: var(--text-main);
+            background-color: var(--bg-card);
+        }
+
+        .persona-pill.active {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+        }
+        .persona-pill.active i { color: #ffffff; }
+
+        /* Security Sub-Banner */
+        .security-banner {
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+        }
+
+        .security-info-items {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .sec-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+        }
+        .sec-item i { font-size: 16px; }
+        .sec-item .sec-val { color: var(--text-main); font-weight: 700; font-family: monospace; }
+        
+        .iam-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: var(--emerald-light);
+            color: var(--emerald-accent);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 11px;
+        }
+
+        /* Main Content Container */
+        .content-container {
+            flex: 1;
+            padding: 32px 24px;
+            max-width: 1720px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Catalog Grid */
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+            gap: 24px;
+        }
+
+        .agent-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 24px;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+            transition: all var(--transition-smooth);
+        }
+
+        .agent-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 5px;
+            background: var(--card-accent, linear-gradient(90deg, var(--primary-color), var(--indigo-accent)));
+        }
+
+        .agent-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
+            border-color: var(--border-highlight);
+        }
+
+        .card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .title-group {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, var(--primary-light), var(--indigo-light));
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            flex-shrink: 0;
+        }
+
+        .agent-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 3px;
+        }
+
+        .agent-id {
+            font-family: monospace;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .badge-ownership {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: var(--radius-full);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge-ownership.operator { background-color: var(--primary-light); color: var(--primary-color); border: 1px solid rgba(59, 130, 246, 0.3); }
+        .badge-ownership.private { background-color: var(--emerald-light); color: var(--emerald-accent); border: 1px solid rgba(16, 185, 129, 0.3); }
+
+        .agent-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .card-metadata-groups {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            background-color: var(--bg-main);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .meta-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .group-header {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .pills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag-pill {
+            font-size: 12px;
+            font-weight: 500;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .tag-pill i { color: var(--primary-color); font-size: 11px; }
+        .tag-pill.tool i { color: var(--amber-accent); }
+
+        .card-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn-launch {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 12px 20px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+            transition: all var(--transition-fast);
+            flex: 1;
+            justify-content: center;
+        }
+        .btn-launch:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+        }
+
+        .tenant-owner-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 12px;
+        }
+
+        .icon-action-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-main);
+            color: var(--text-muted);
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-fast);
+        }
+        .icon-action-btn:hover {
+            color: var(--text-main);
+            border-color: var(--text-muted);
+        }
+        .icon-action-btn.delete:hover {
+            color: var(--rose-accent);
+            border-color: var(--rose-accent);
+            background-color: var(--rose-light);
+        }
+
+        /* Live Multi-Tenant API Sandbox Section */
+        .api-sandbox-section {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .sandbox-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+        }
+
+        .sandbox-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .api-badge {
+            background-color: var(--indigo-light);
+            color: var(--indigo-accent);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        .sandbox-body {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 32px;
+        }
+
+        .sandbox-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background-color: var(--bg-main);
+            padding: 24px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .form-select, .form-input {
+            height: 44px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 0 16px;
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--text-main);
+            outline: none;
+            width: 100%;
+            transition: all var(--transition-fast);
+        }
+        .form-select:focus, .form-input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .form-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .btn-api-execute {
+            background: linear-gradient(135deg, var(--primary-color), var(--indigo-accent));
+            color: #ffffff;
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 14px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+            transition: all var(--transition-fast);
+            margin-top: 8px;
+        }
+        .btn-api-execute:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+        }
+
+        /* Sandbox Output Area */
+        .sandbox-output {
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .output-header {
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: monospace;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .output-status {
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        .output-status.code-200 { background-color: var(--emerald-light); color: var(--emerald-accent); }
+        .output-status.code-403 { background-color: var(--rose-light); color: var(--rose-accent); }
+
+        .output-content {
+            padding: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13px;
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-y: auto;
+            flex: 1;
+            white-space: pre-wrap;
+        }
+        .output-content .json-key { color: var(--primary-color); }
+        .output-content .json-string { color: var(--emerald-accent); }
+        .output-content .json-number { color: var(--amber-accent); }
+        .output-content .json-error { color: var(--rose-accent); font-weight: 700; }
+        /* Demo Dropdown Styling */
+        .demo-dropdown-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .demo-dropdown-wrapper:hover .demo-menu-content {
+            display: flex;
+            flex-direction: column;
+            animation: fadeInDown 0.15s ease forwards;
+        }
+
+        .demo-menu-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            margin-top: 8px;
+            background-color: var(--bg-card);
+            min-width: 270px;
+            border: 1px solid var(--primary-color);
+            border-radius: var(--radius-md);
+            box-shadow: 0 10px 35px rgba(0,0,0,0.8), 0 0 20px rgba(59, 130, 246, 0.2);
+            z-index: 999;
+            overflow: hidden;
+            padding: 6px 0;
+            text-align: left;
+        }
+
+        .demo-menu-content a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 18px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all var(--transition-fast);
+        }
+
+        .demo-menu-content a:hover {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            padding-left: 22px;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Portal Header -->
+    <header class="global-header">
+        <div class="header-left">
+            <div class="logo-container">
+                <div class="logo-icon"><i class="fa-solid fa-cube"></i></div>
+                <span class="logo-text">Acme <span class="logo-highlight">AI Platform</span></span>
+                <span class="portal-badge">Client Portal</span>
+            </div>
+        </div>
+
+        <div class="header-right" style="display: flex; align-items: center; gap: 12px;">
+            <!-- Persona Switcher representing Section 6.1 Requirements -->
+            <div class="persona-selector-box" style="margin-right: 12px;">
+                <span class="persona-label"><i class="fa-solid fa-user-shield" style="color: var(--primary-color);"></i> Logged in as:</span>
+                <div class="persona-pills">
+                    <button class="persona-pill active" id="pill-cust-a" onclick="switchPersona('Customer A')">
+                        <i class="fa-solid fa-building-columns"></i> Customer A
+                    </button>
+                    <button class="persona-pill" id="pill-cust-b" onclick="switchPersona('Customer B')">
+                        <i class="fa-solid fa-microchip"></i> Customer B
+                    </button>
+                </div>
+            </div>
+            <a href="/admin" style="display: flex; align-items: center; gap: 6px; color: var(--text-muted); text-decoration: none; font-size: 13px; font-weight: 600; background-color: var(--bg-main); border: 1px solid var(--border-color); padding: 8px 14px; border-radius: var(--radius-full);"><i class="fa-solid fa-robot"></i> Admin View</a>
+            <a href="/admin/catalog" style="display: flex; align-items: center; gap: 6px; color: var(--primary-color); text-decoration: none; font-size: 13px; font-weight: 700; background-color: var(--primary-light); border: 1px solid var(--primary-color); padding: 8px 14px; border-radius: var(--radius-full);"><i class="fa-solid fa-sitemap"></i> Client Portal</a>
+            
+            <!-- Demo Steps Dropdown -->
+            <div class="demo-dropdown-wrapper">
+                <div style="display: flex; align-items: center; gap: 6px; background: linear-gradient(135deg, var(--primary-color), var(--indigo-accent)); color: #fff; font-size: 13px; font-weight: 700; padding: 8px 16px; border-radius: var(--radius-full); cursor: pointer; box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3);">
+                    <i class="fa-solid fa-play"></i> Validation Demo <i class="fa-solid fa-chevron-down" style="font-size: 10px; margin-left: 4px;"></i>
+                </div>
+                <div class="demo-menu-content">
+                    <div style="padding: 8px 18px; font-size: 11px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; border-bottom: 1px solid var(--border-color); letter-spacing: 0.5px; margin-bottom: 4px;">Acme Execution Scenarios</div>
+                    <a href="/admin/step1"><i class="fa-solid fa-sliders" style="color: var(--primary-color); width: 18px;"></i> Step 1: Provisioning Setup</a>
+                    <a href="/admin/step2"><i class="fa-solid fa-globe" style="color: var(--primary-color); width: 18px;"></i> Step 2: Shared Agent Deploy</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="content-container">
+        
+        <!-- Section Header -->
+        <div class="section-header">
+            <div>
+                <h1 class="section-title">Authorized Agent Catalog</h1>
+                <p class="section-subtitle">Below are the custom AI agents visible and entitled to your specific enterprise organization. Unentitled private agents belonging to other tenants are strictly filtered at the platform IAM and API abstraction layer.</p>
+            </div>
+            <div style="display: flex; gap: 12px;">
+                <button onclick="renderCatalog()" style="display: flex; align-items: center; gap: 8px; background: var(--surface-light); border: 1px solid var(--border-color); color: var(--primary-color); font-size: 13px; font-weight: 700; padding: 10px 20px; border-radius: var(--radius-full); cursor: pointer;"><i class="fa-solid fa-rotate"></i> Refresh Entitlements</button>
+                <a href="/admin/creation" style="display: flex; align-items: center; gap: 8px; background: linear-gradient(135deg, var(--cyan-accent), var(--primary-color)); color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 700; padding: 12px 22px; border-radius: var(--radius-full); box-shadow: 0 0 25px rgba(6, 182, 212, 0.4); transition: all var(--transition-fast);"><i class="fa-solid fa-wand-magic-sparkles"></i> Open Agent Studio</a>
+            </div>
+        </div>
+
+        <!-- Catalog Grid -->
+        <div class="catalog-grid" id="catalog-container">
+            <!-- Dynamically populated based on selected customer persona -->
+        </div>
+
+        <!-- Live Multi-Tenant API Sandbox Section (Proving API-Level 403 Rejection) -->
+        <section class="api-sandbox-section">
+            <div class="sandbox-header">
+                <div class="sandbox-title">
+                    <i class="fa-solid fa-terminal" style="color: var(--primary-color);"></i>
+                    <span>API-Level Enforcement Check (Direct Target Invocation)</span>
+                </div>
+                <span class="api-badge">POST https://aiplatform.googleapis.com/v1/agents/{agent_id}:invoke</span>
+            </div>
+
+            <div class="sandbox-body">
+                
+                <!-- Left: Execution Form -->
+                <div class="sandbox-form">
+                    <div class="form-group">
+                        <div class="form-label">
+                            <span>Calling Tenant Spiffy Context:</span>
+                            <span style="font-family: monospace; color: var(--emerald-accent);" id="api-caller-badge">acme-legal</span>
+                        </div>
+                        <input type="text" class="form-input" id="api-caller-input" value="Customer A (Acme Legal)" disabled style="opacity: 0.8; font-weight: 600;">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Select Target Agent to Invoke:</label>
+                        <select class="form-select" id="api-target-select" onchange="updateApiTargetDesc()">
+                            <option value="shared">Contract Analyst Agent (Shared Operator Agent)</option>
+                            <option value="agent-a" id="opt-agent-a">Agent A (Private Matter Intake Copilot — Acme Legal)</option>
+                        </select>
+                        <p class="form-desc" id="api-target-desc">Invoking shared multi-tenant contract analysis agent accessible to all active platform clients.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Simulated Prompt Input:</label>
+                        <input type="text" class="form-input" id="api-prompt-input" value="Summarize key indemnification and termination liabilities.">
+                    </div>
+
+                    <button class="btn-api-execute" onclick="executeApiSimulation()">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Send Simulated API Invocation
+                    </button>
+                </div>
+
+                <!-- Right: Simulated API Response Box -->
+                <div class="sandbox-output">
+                    <div class="output-header">
+                        <span>API Response Payload</span>
+                        <span class="output-status code-200" id="output-status-pill">HTTP 200 OK</span>
+                    </div>
+                    <div class="output-content" id="output-json-area">
+<span class="json-key">"status"</span>: <span class="json-string">"SUCCESS"</span>,
+<span class="json-key">"agent_invoked"</span>: <span class="json-string">"Contract Analyst Agent"</span>,
+<span class="json-key">"tenant_context"</span>: <span class="json-string">"Customer A (Acme Legal)"</span>,
+<span class="json-key">"connector_auth"</span>: <span class="json-string">"OAuth 2.0 Google Workspace token validated"</span>,
+<span class="json-key">"result"</span>: {
+  <span class="json-key">"summary"</span>: <span class="json-string">"Acme Legal Agreement #9841 analyzed successfully. Indemnity cap is limited to 12 months fees. Standard cross-tenant PII guardrails were enforced."</span>,
+  <span class="json-key">"thinking_tokens_used"</span>: <span class="json-number">3420</span>
+}</div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Embedded JS for Interactive Multi-Tenant Demonstrations -->
+    <script>
+        let activePersona = "Customer A";
+
+        /**
+         * Initialize Document
+         */
+        document.addEventListener("DOMContentLoaded", () => {
+            renderCatalog();
+        });
+
+        /**
+         * Switch Tenant Persona
+         */
+        function switchPersona(persona) {
+            activePersona = persona;
+
+            // Update UI Profile Pills
+            document.getElementById("pill-cust-a").classList.toggle("active", persona === "Customer A");
+            document.getElementById("pill-cust-b").classList.toggle("active", persona === "Customer B");
+
+            // Update Sandbox Caller Context
+            document.getElementById("api-caller-badge").textContent = persona === "Customer A" ? "acme-legal" : "beta-corp";
+            document.getElementById("api-caller-input").value = persona === "Customer A" ? "Customer A (Acme Legal)" : "Customer B (Beta Corp)";
+
+            // Dynamically update select options based on persona
+            const targetSelect = document.getElementById("api-target-select");
+            if (persona === "Customer A") {
+                targetSelect.innerHTML = `
+                    <option value="agent-a">Agent A (Private Matter Intake Copilot — Acme Legal)</option>
+                    <option value="shared">Contract Analyst Agent (Private to Customer B)</option>
+                `;
+            } else {
+                targetSelect.innerHTML = `
+                    <option value="shared">Contract Analyst Agent (Private to Customer B)</option>
+                    <option value="agent-a">Agent A (Private Matter Intake Copilot — Acme Legal)</option>
+                `;
+            }
+
+            // Update API options
+            targetSelect.value = persona === "Customer A" ? "agent-a" : "shared";
+            updateApiTargetDesc();
+
+            // Render updated catalog cards
+            renderCatalog();
+        }
+
+        /**
+         * Render Dynamic Catalog Cards by Fetching Live API Entitlements
+         */
+        async function renderCatalog() {
+            const container = document.getElementById("catalog-container");
+            container.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 64px 24px; color: var(--primary-color);"><i class="fa-solid fa-spinner fa-spin" style="font-size: 32px; margin-bottom: 12px; display: block;"></i><p>Evaluating Zero-Trust Spiffy Identity Claims...</p></div>`;
+
+            try {
+                const res = await fetch("http://localhost:8082/api/v1/agents/client_catalog");
+                const data = await res.json();
+
+                if (data.status === "SUCCESS") {
+                    const visibleAgents = data.entitlements[activePersona] || [];
+                    
+                    container.innerHTML = "";
+
+                    if (visibleAgents.length === 0) {
+                        container.innerHTML = `
+                            <div style="grid-column: 1 / -1; background: var(--surface-card); border: 1px solid rgba(244, 63, 94, 0.3); border-radius: var(--radius-lg); padding: 56px 24px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                                <i class="fa-solid fa-shield-halved" style="font-size: 48px; color: var(--rose-accent); margin-bottom: 16px; display: block;"></i>
+                                <h3 style="color: #ffffff; font-size: 20px; font-weight: 700; margin-bottom: 8px;">Zero-Trust Multi-Tenant Isolation Enforced</h3>
+                                <p style="color: var(--text-dim); font-size: 14px; max-width: 540px; margin: 0 auto 24px auto; line-height: 1.5;">
+                                    There are currently <strong>no active foundation reasoning engines or custom agents</strong> assigned to your cryptographic Spiffy boundary (<code>${activePersona}</code>). The Platform IAM Layer successfully blocked external catalog visibility.
+                                </p>
+                                <button onclick="renderCatalog()" style="background: var(--surface-light); border: 1px solid var(--border-color); color: var(--primary-color); padding: 10px 20px; border-radius: var(--radius-full); font-weight: 700; font-size: 12px; cursor: pointer;"><i class="fa-solid fa-rotate"></i> Re-verify Entitlements</button>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    visibleAgents.forEach(agent => {
+                        const isOwner = true;
+                        const agentId = agent.id || agent.urn || "urn:agent:default";
+                        const agentModel = agent.model || agent.model_config || "Gemini 3.0 Enterprise";
+                        const agentDesc = agent.desc || agent.description || "Enterprise AI Reasoning Engine deployable workload.";
+
+                        // Skills HTML
+                        let skillsHtml = "";
+                        (agent.skills || ["Clause Extraction", "Risk Analysis"]).forEach(s => {
+                            const sText = typeof s === 'object' ? (s.name || JSON.stringify(s)) : s;
+                            skillsHtml += `<span class="tag-pill"><i class="fa-solid fa-circle-check"></i> ${sText}</span>`;
+                        });
+
+                        // Tools HTML
+                        let toolsHtml = "";
+                        (agent.tools || ["Acme Drive Vault"]).forEach(t => {
+                            const tText = typeof t === 'object' ? (t.name || JSON.stringify(t)) : t;
+                            toolsHtml += `<span class="tag-pill tool"><i class="fa-solid fa-plug-circle-bolt"></i> ${tText}</span>`;
+                        });
+
+                        const safeId = agentId.replace(/[^a-zA-Z0-9]/g, '');
+
+                        // Inline Pre-Launch Configuration Box
+                        const sessionConfigHtml = `
+                            <div style="background-color: rgba(5, 8, 15, 0.6); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 16px; margin-top: 20px; display: flex; flex-direction: column; gap: 14px;">
+                                <div style="display: flex; align-items: center; justify-content: space-between;">
+                                    <span style="font-size: 11px; font-weight: 800; color: var(--primary-color); text-transform: uppercase; letter-spacing: 0.5px;"><i class="fa-solid fa-sliders" style="margin-right: 6px;"></i> Session Model & Skills Override</span>
+                                    <span style="font-family: monospace; font-size: 10px; color: var(--emerald-accent); background: var(--bg-card); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border-color);">ADK Runtime Cache</span>
+                                </div>
+                                
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                    <div>
+                                        <label style="font-size: 11px; color: var(--text-muted); font-weight: 600; display: block; margin-bottom: 4px;">Active Foundation Model:</label>
+                                        <select id="cfg-model-${safeId}" style="width: 100%; height: 34px; background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-sm); color: var(--text-main); font-size: 12px; padding: 0 10px; font-family: inherit; outline: none; cursor: pointer;">
+                                            <option value="${agentModel}" selected>${agentModel}</option>
+                                            <option value="Claude 3.5 Sonnet">Claude 3.5 Sonnet (Vertex Model Garden)</option>
+                                            <option value="Gemini 2.5 Pro">Gemini 2.5 Pro (Custom Complex Reasoning)</option>
+                                            <option value="publishers/google/models/gemini-3.5-flash">Gemini 3.5 Flash</option>
+                                            <option value="publishers/google/models/gemini-3.1-flash-lite">Gemini 3.1 Flash Lite</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="font-size: 11px; color: var(--text-muted); font-weight: 600; display: block; margin-bottom: 4px;">Thinking Budget Cap:</label>
+                                        <select id="cfg-think-${safeId}" style="width: 100%; height: 34px; background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-sm); color: var(--text-main); font-size: 12px; padding: 0 10px; font-family: inherit; outline: none; cursor: pointer;">
+                                            <option value="8,000 Tokens">8,000 Thinking Tokens (Max Budget)</option>
+                                            <option value="4,000 Tokens">4,000 Thinking Tokens (Standard Tier)</option>
+                                            <option value="Disabled">Disabled (Standard Inference)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
+                        const card = document.createElement("div");
+                        card.className = "agent-card";
+                        card.style.setProperty("--card-accent", "linear-gradient(90deg, var(--emerald-accent), var(--primary-color))");
+
+                        card.innerHTML = `
+                            <div>
+                                <div class="card-top">
+                                    <div class="title-group">
+                                        <div class="card-icon"><i class="fa-solid ${agent.icon || 'fa-robot'}"></i></div>
+                                        <div>
+                                            <h3 class="agent-name">${agent.name}</h3>
+                                            <span class="agent-id" style="font-family: monospace; font-size: 11px; color: var(--text-muted);">${agentId.substring(0, 36)}...</span>
+                                        </div>
+                                    </div>
+                                    <span class="badge-ownership private">${activePersona} Scoped</span>
+                                </div>
+
+                                <p class="agent-desc" style="margin: 20px 0; font-size: 13px; line-height: 1.5;">${agentDesc}</p>
+
+                                <div class="card-metadata-groups">
+                                    <div class="meta-group">
+                                        <span class="group-header">Active Loaded Skills</span>
+                                        <div class="pills-list">${skillsHtml}</div>
+                                    </div>
+
+                                    <div class="meta-group" style="margin-top: 12px;">
+                                        <span class="group-header">Per-Tenant Connectors</span>
+                                        <div class="pills-list">${toolsHtml}</div>
+                                    </div>
+                                </div>
+
+                                ${sessionConfigHtml}
+                            </div>
+
+                            <div class="card-actions">
+                                <button class="btn-launch" onclick="launchCustomSession('${agent.name}', '${safeId}')">
+                                    <i class="fa-solid fa-bolt"></i> Launch Agent Session
+                                </button>
+                                <div class="tenant-owner-actions" title="Tenant Admin Controls">
+                                    <button class="icon-action-btn" onclick="alert('Opening private custom rules editor for ${agent.name}.')" title="Edit Instructions"><i class="fa-solid fa-sliders"></i></button>
+                                    <button class="icon-action-btn" onclick="alert('Viewing private tenant API access tokens.')" title="API Credentials"><i class="fa-solid fa-key"></i></button>
+                                </div>
+                            </div>
+                        `;
+
+                        container.appendChild(card);
+                    });
+                } else {
+                    container.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 32px; color: var(--rose-accent);">Error fetching catalog: ${data.message}</div>`;
+                }
+            } catch (err) {
+                container.innerHTML = `<div style="grid-column: 1 / -1; background: #500; color: #fff; padding: 24px; text-align: left; font-family: monospace; border-radius: 8px;"><strong>Javascript Runtime Error inside renderCatalog:</strong><br><br>${err.message}<br><br><pre>${err.stack}</pre></div>`;
+            }
+        }
+
+        /**
+         * API Simulation Helpers
+         */
+        function updateApiTargetDesc() {
+            const val = document.getElementById("api-target-select").value;
+            const desc = document.getElementById("api-target-desc");
+
+            if (val === "shared") {
+                desc.textContent = "Invoking shared multi-tenant contract analysis agent accessible to all active platform clients.";
+                desc.style.color = "var(--text-muted)";
+            } else if (val === "agent-a") {
+                desc.textContent = "ATTENTION: Attempting to invoke Customer A's private matter intake agent directly by its ID.";
+                desc.style.color = "var(--amber-accent)";
+            } else if (val === "agent-b") {
+                desc.textContent = "ATTENTION: Attempting to invoke Customer B's private vendor compliance agent directly by its ID.";
+                desc.style.color = "var(--amber-accent)";
+            }
+        }
+
+        function executeApiSimulation() {
+            const target = document.getElementById("api-target-select").value;
+            const statusPill = document.getElementById("output-status-pill");
+            const outputArea = document.getElementById("output-json-area");
+
+            // Customer B invoking Agent A -> 403 Forbidden
+            if (activePersona === "Customer B" && target === "agent-a") {
+                statusPill.className = "output-status code-403";
+                statusPill.textContent = "HTTP 403 FORBIDDEN";
+                outputArea.innerHTML = `
+<span class="json-error">{</span>
+  <span class="json-key">"error"</span>: {
+    <span class="json-key">"code"</span>: <span class="json-number">403</span>,
+    <span class="json-key">"message"</span>: <span class="json-string">"Permission Denied: IAM Access Control verification failed. The calling Spiffy ID (spiffe://acme.com/tenant/beta-corp/eu-west) is not authorized to invoke or discover private Target Agent ID ...agents:6340670100047517658 belonging to Customer A."</span>,
+    <span class="json-key">"status"</span>: <span class="json-string">"PERMISSION_DENIED"</span>,
+    <span class="json-key">"audit_log"</span>: <span class="json-string">"Security violation detour entry logged to operator audit trail."</span>
+  }
+<span class="json-error">}</span>`;
+            } 
+            // Customer A invoking Contract Analyst Agent (which is private to Customer B) -> 403 Forbidden
+            else if (activePersona === "Customer A" && target === "shared") {
+                statusPill.className = "output-status code-403";
+                statusPill.textContent = "HTTP 403 FORBIDDEN";
+                outputArea.innerHTML = `
+<span class="json-error">{</span>
+  <span class="json-key">"error"</span>: {
+    <span class="json-key">"code"</span>: <span class="json-number">403</span>,
+    <span class="json-key">"message"</span>: <span class="json-string">"Permission Denied: IAM Access Control verification failed. The calling Spiffy ID (spiffe://acme.com/tenant/acme-legal/us-east) is not authorized to invoke private Target Agent ID projects/404109417257/locations/us-central1/reasoningEngines/3321719735267098624 belonging to Customer B."</span>,
+    <span class="json-key">"status"</span>: <span class="json-string">"PERMISSION_DENIED"</span>,
+    <span class="json-key">"audit_log"</span>: <span class="json-string">"Security violation detour entry logged to operator audit trail."</span>
+  }
+<span class="json-error">}</span>`;
+            }
+            // Shared Agent or Valid Private Agent -> 200 OK
+            else {
+                const targetName = target === "shared" ? "Contract Analyst Agent" : "Agent A (Matter Intake)";
+                const cloudAuth = activePersona === "Customer A" ? "OAuth 2.0 Google Workspace token validated" : "OAuth 2.0 Microsoft Entra ID / OneDrive token validated";
+                const mockSummary = activePersona === "Customer A" 
+                    ? "Acme Legal Agreement #9841 analyzed successfully. Indemnity cap is limited to 12 months fees. Standard cross-tenant PII guardrails were enforced."
+                    : "Contract Analyst Agent successfully processed Beta Corp vendor agreement #4021. 3LO Google Drive token verified.";
+
+                statusPill.className = "output-status code-200";
+                statusPill.textContent = "HTTP 200 OK";
+                outputArea.innerHTML = `
+<span class="json-key">"status"</span>: <span class="json-string">"SUCCESS"</span>,
+<span class="json-key">"agent_invoked"</span>: <span class="json-string">"${targetName}"</span>,
+<span class="json-key">"tenant_context"</span>: <span class="json-string">"${activePersona}"</span>,
+<span class="json-key">"connector_auth"</span>: <span class="json-string">"${cloudAuth}"</span>,
+<span class="json-key">"result"</span>: {
+  <span class="json-key">"summary"</span>: <span class="json-string">"${mockSummary}"</span>,
+  <span class="json-key">"thinking_tokens_used"</span>: <span class="json-number">${Math.floor(Math.random() * 4000) + 1200}</span>
+}`;
+            }
+        }
+
+        function launchCustomSession(agentName, safeId) {
+            const model = document.getElementById(`cfg-model-${safeId}`) ? document.getElementById(`cfg-model-${safeId}`).value : "Gemini 3.0 Enterprise";
+            const think = document.getElementById(`cfg-think-${safeId}`) ? document.getElementById(`cfg-think-${safeId}`).value : "8,000 Tokens";
+            const skillsEl = document.getElementById(`cfg-skills-${safeId}`);
+            const skills = skillsEl ? skillsEl.value : "Clause Extraction, Risk Flagging, Playbook Comparison";
+
+            alert(
+                `🚀 Launching active chat plane for ${agentName}...\n\n` +
+                `🔒 Bound Cryptographic Persona: ${activePersona}\n` +
+                `🧠 Active Runtime Engine: ${model}\n` +
+                `⚖️ Scoped Thinking Budget: ${think}\n` +
+                `📦 Synced Skills Manifest: ${skills}\n\n` +
+                `✔ ADK Session successfully instantiated with 100% tenant catalog and configuration isolation!\n\n` +
+                `👉 Click OK to open the Live Customer Chat Portal.`
+            );
+
+            // Open the real live multi-tenant chat app on port 8080!
+            window.open("http://localhost:8080/", "_blank");
+        }
+    </script>
+</body>
+</html>

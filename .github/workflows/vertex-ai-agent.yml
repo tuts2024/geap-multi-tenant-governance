@@ -1,0 +1,83 @@
+name: Vertex AI Contract Audit Agent
+
+on:
+  push:
+    paths:
+      - 'contracts/**.txt'
+      - 'contracts/**.md'
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  audit-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v3
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Extract Contract Content & Query Agent
+        id: query
+        run: |
+          # 1. Find the contract file that was pushed
+          CONTRACT_FILE=$(git diff-tree --no-commit-id --name-only -r HEAD | grep '^contracts/' | head -n 1)
+          if [ -z "$CONTRACT_FILE" ]; then
+            echo "No contract file found in push."
+            exit 0
+          fi
+          
+          CONTRACT_NAME=$(basename "$CONTRACT_FILE")
+          echo "Auditing contract: $CONTRACT_NAME"
+          
+          # Read the first 150 lines of the contract safely
+          CONTRACT_TEXT=$(cat "$CONTRACT_FILE" | head -n 150)
+          
+          # 2. Construct the query payload using jq
+          # Note: We pass the Customer B user_id so it enforces the compliance auditor skills!
+          jq -n --arg query "Analyze the contract: $CONTRACT_TEXT" \
+                --arg user_id "loWmDyexCjMFhGkqV7MPZYwMnEf1" \
+                '{input: {message: $query, user_id: $user_id}}' > payload.json
+          
+          # 3. Get Google Cloud access token
+          ACCESS_TOKEN=$(gcloud auth print-access-token)
+          
+          # 4. Query the Vertex AI Reasoning Engine
+          echo "Sending query to Vertex AI..."
+          HTTP_STATUS=$(curl -s -o response.json -w "%{http_code}" -X POST \
+            -H "Authorization: Bearer $ACCESS_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d @payload.json \
+            "https://us-central1-aiplatform.googleapis.com/v1/projects/404109417257/locations/us-central1/reasoningEngines/1626316785701617664:query")
+          
+          if [ "$HTTP_STATUS" -ne 200 ]; then
+            echo "API request failed with status $HTTP_STATUS"
+            cat response.json
+            exit 1
+          fi
+          
+          # 5. Extract output and format findings
+          jq -r '.output' response.json > findings.md
+          cat findings.md
+
+      - name: Create GitHub Issue with Audit Findings
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          CONTRACT_FILE=$(git diff-tree --no-commit-id --name-only -r HEAD | grep '^contracts/' | head -n 1)
+          if [ -z "$CONTRACT_FILE" ]; then
+            exit 0
+          fi
+          CONTRACT_NAME=$(basename "$CONTRACT_FILE")
+          
+          # Create a nice issue detailing the audit findings
+          gh issue create \
+            --title "🛡️ Compliance Audit: $CONTRACT_NAME" \
+            --body-file findings.md \
+            --label "compliance-hold"

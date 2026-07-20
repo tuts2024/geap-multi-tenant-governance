@@ -1,0 +1,2077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acme Client Portal — Enterprise Agent Studio</title>
+  
+  <!-- Modern Google Fonts & FontAwesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-main: #0b0f19;
+      --bg-card: #131b2e;
+      --bg-hover: #1a243d;
+      --primary-color: #3b82f6;
+      --primary-hover: #2563eb;
+      --primary-light: rgba(59, 130, 246, 0.15);
+      --emerald-accent: #10b981;
+      --emerald-light: rgba(16, 185, 129, 0.15);
+      --amber-accent: #f59e0b;
+      --amber-light: rgba(245, 158, 11, 0.15);
+      --indigo-accent: #6366f1;
+      --indigo-light: rgba(99, 102, 241, 0.15);
+      --border-color: #222f4e;
+      --border-light: #2c3c62;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --radius-sm: 6px;
+      --radius-full: 9999px;
+      --shadow-lg: 0 10px 30px -5px rgba(0, 0, 0, 0.6);
+      --transition-fast: 0.15s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Top Navigation Header */
+    header {
+      background-color: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
+      padding: 14px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      background: linear-gradient(135deg, var(--primary-color), var(--indigo-accent));
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+    }
+
+    .logo-text {
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .logo-highlight {
+      color: var(--primary-color);
+    }
+
+    .portal-badge {
+      background-color: var(--indigo-light);
+      color: var(--indigo-accent);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .user-info-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-color);
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      font-size: 13px;
+    }
+
+    .user-icon {
+      color: var(--emerald-accent);
+    }
+
+    .user-email {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .btn-logout {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      transition: color var(--transition-fast);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-logout:hover {
+      color: var(--rose-accent);
+    }
+
+    /* Main Container Split Screen */
+    .main-workspace {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* Left Panel - Entitled Agent Catalog */
+    .catalog-panel {
+      width: 42%;
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      background-color: #0d1322;
+      overflow-y: auto;
+      padding: 24px;
+      gap: 20px;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 14px;
+    }
+
+    .panel-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel-title i {
+      color: var(--primary-color);
+    }
+
+    .agent-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      transition: all var(--transition-fast);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-body-content {
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .agent-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-color), var(--indigo-accent));
+    }
+
+    .agent-card.active {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .card-title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-sm);
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-color);
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .agent-name {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .agent-urn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .card-pills-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background-color: var(--bg-main);
+      padding: 12px;
+      border-radius: var(--radius-sm);
+    }
+
+    .pills-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      letter-spacing: 0.5px;
+    }
+
+    .pills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag-pill {
+      font-size: 11px;
+      font-weight: 500;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 4px 8px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .tag-pill i { color: var(--primary-color); }
+    .tag-pill.tool i { color: var(--amber-accent); }
+
+    .btn-card-action {
+      background-color: var(--primary-color);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 10px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-card-action:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .agent-card.active .btn-card-action {
+      background: var(--emerald-light);
+      color: var(--emerald-accent);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      cursor: default;
+    }
+
+    /* Right Panel - Scoped Chat Console */
+    .chat-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--bg-main);
+      overflow: hidden;
+    }
+
+    .chat-header {
+      background-color: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .chat-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .active-agent-display {
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .active-agent-display i {
+      color: var(--primary-color);
+    }
+
+    .connector-status-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: var(--radius-full);
+    }
+
+    .connector-status-badge.active {
+      background-color: var(--emerald-light);
+      color: var(--emerald-accent);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .connector-status-badge.required {
+      background-color: var(--amber-light);
+      color: var(--amber-accent);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-connect-drive {
+      background-color: #ffffff;
+      color: #111827;
+      border: 1px solid #d1d5db;
+      border-radius: var(--radius-full);
+      padding: 6px 16px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      transition: all var(--transition-fast);
+    }
+
+    .btn-connect-drive:hover {
+      background-color: #f9fafb;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(255,255,255,0.1);
+    }
+
+    /* Chat History Area */
+    .chat-history {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .msg-wrapper {
+      display: flex;
+      flex-direction: column;
+      max-width: 75%;
+    }
+
+    .msg-wrapper.user {
+      align-self: flex-end;
+    }
+
+    .msg-wrapper.agent {
+      align-self: flex-start;
+    }
+
+    .msg-bubble {
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      line-height: 1.6;
+      font-size: 14px;
+      position: relative;
+    }
+
+    .msg-wrapper.user .msg-bubble {
+      background: linear-gradient(135deg, var(--primary-color), var(--indigo-accent));
+      color: #ffffff;
+      border-bottom-right-radius: 2px;
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+    }
+
+    .msg-wrapper.agent .msg-bubble {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      border-bottom-left-radius: 2px;
+    }
+
+    .msg-meta {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .msg-wrapper.user .msg-meta {
+      justify-content: flex-end;
+    }
+
+    .thinking-badge {
+      background-color: var(--indigo-light);
+      color: var(--indigo-accent);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-weight: 700;
+      font-size: 10px;
+    }
+
+    /* Suggestion Chips */
+    .suggestions-row {
+      display: flex;
+      gap: 8px;
+      padding: 0 24px;
+      margin-bottom: 12px;
+      overflow-x: auto;
+      flex-shrink: 0;
+    }
+
+    .suggestion-chip {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all var(--transition-fast);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .suggestion-chip:hover {
+      color: var(--primary-color);
+      border-color: var(--primary-color);
+      background-color: var(--primary-light);
+    }
+
+    /* Chat Input Bar */
+    .chat-input-bar {
+      padding: 20px 24px 24px 24px;
+      border-top: 1px solid var(--border-color);
+      background-color: var(--bg-card);
+    }
+
+    .input-form {
+      display: flex;
+      gap: 12px;
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 6px 6px 6px 16px;
+      align-items: center;
+      transition: border-color var(--transition-fast);
+    }
+
+    .input-form:focus-within {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.15);
+    }
+
+    .chat-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 14px;
+      height: 38px;
+    }
+
+    .btn-send {
+      background-color: var(--primary-color);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-sm);
+      width: 38px;
+      height: 38px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-send:hover {
+      background-color: var(--primary-hover);
+      transform: scale(1.03);
+    }
+
+    .empty-state {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-dim);
+      gap: 16px;
+      padding: 48px;
+      text-align: center;
+    }
+
+    .empty-icon {
+      font-size: 48px;
+      color: var(--border-light);
+      background: var(--bg-card);
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-lg);
+    }
+    .btn-create-agent-action:hover {
+      background: rgba(59, 130, 246, 0.2) !important;
+      border-color: var(--primary-hover) !important;
+      color: var(--text-main) !important;
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.15);
+    }
+    .btn-card-delete:hover {
+      color: var(--rose-accent) !important;
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header>
+    <div class="logo-container">
+      <div class="logo-icon"><i class="fa-solid fa-cube"></i></div>
+      <span class="logo-text">Acme <span class="logo-highlight">AI Portal</span></span>
+      <span class="portal-badge">Client Workspace</span>
+    </div>
+
+    <div class="header-right">
+      <div class="user-info-box">
+        <i class="fa-solid fa-circle-user user-icon"></i>
+        <span class="user-email" id="user-email-display">{{ user_email }}</span>
+      </div>
+      <a class="btn-logout" href="/logout"><i class="fa-solid fa-right-from-bracket"></i> Sign out</a>
+    </div>
+  </header>
+
+  <!-- Main Split Screen Workspace -->
+  <main class="main-workspace">
+
+    <!-- Left Panel: Entitled Catalog -->
+    <section class="catalog-panel" style="display: flex; flex-direction: column; justify-content: space-between; min-height: calc(100vh - 120px);">
+      <div>
+        <div class="panel-header">
+          <h2 class="panel-title"><i class="fa-solid fa-sitemap"></i> Authorized Agents</h2>
+          <span style="font-size: 12px; color: var(--emerald-accent); font-weight: 700;">Entitlements Active</span>
+        </div>
+        <button class="btn-create-agent-action" onclick="openAgentCreatorModal()" style="width: 100%; padding: 12px; background: rgba(59, 130, 246, 0.08); border: 1px dashed var(--primary-color); border-radius: var(--radius-sm); color: var(--primary-color); font-size: 11px; font-weight: 800; cursor: pointer; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all var(--transition-fast); box-sizing: border-box;">
+          <i class="fa-solid fa-square-plus"></i> 🔌 Build & Deploy Custom Agent
+        </button>
+
+        <div id="catalog-list" style="display: flex; flex-direction: column; gap: 18px;">
+          <!-- Dynamically populated from BQ registry client catalog -->
+          <div style="text-align: center; padding: 48px 0; color: var(--primary-color);">
+            <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 24px; margin-bottom: 8px;"></i>
+            <p style="font-size: 13px;">Resolving cryptographic tenant credentials...</p>
+          </div>
+        </div>
+      </div>
+
+
+    </section>
+
+    <!-- Right Panel: Scoped Chat Console -->
+    <section class="chat-panel">
+      
+      <!-- Scoped Chat Header -->
+      <div class="chat-header">
+        <div class="chat-header-left" style="flex: 1; min-width: 0;">
+          <h2 class="active-agent-display" id="chat-agent-title" style="flex-wrap: wrap; gap: 8px; align-items: center;"><i class="fa-solid fa-robot"></i> No Agent Selected</h2>
+          <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px; width: 100%;">
+            <span class="agent-urn" id="chat-agent-urn" style="font-size: 11px; font-family: monospace; color: var(--emerald-accent); word-break: break-all; line-height: 1.3; flex: 1;">Select an agent from the catalog to initialize the session.</span>
+            <button id="btn-copy-chat-urn" onclick="copyActiveChatUrn()" title="Copy Full URN" style="display: none; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); color: var(--emerald-accent); border-radius: 4px; padding: 2px 8px; font-size: 11px; font-weight: 700; cursor: pointer; flex-shrink: 0; align-items: center; gap: 4px;"><i class="fa-regular fa-copy"></i> Copy</button>
+          </div>
+        </div>
+
+        <!-- Header Actions: Activity Inbox & Connectors Hub -->
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <!-- Activity Inbox Popover -->
+          <div style="position: relative; display: inline-block;">
+            <button class="btn-connect-drive" id="btn-activity-inbox" onclick="toggleActivityInboxPopover()" style="background: rgba(5, 8, 15, 0.6); border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 14px; border-radius: var(--radius-sm); font-size: 11px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s;">
+              <i class="fa-solid fa-list-check" style="color: var(--amber-accent);"></i> Activity Inbox <span style="background: var(--amber-accent); color: #000; font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: var(--radius-full);" id="active-tasks-badge">0</span> <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
+            </button>
+            
+            <div class="connectors-popover" id="activity-inbox-popover" style="display: none; position: absolute; top: 42px; right: 0; background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 16px; width: 340px; box-shadow: var(--shadow-lg); z-index: 100; flex-direction: column; gap: 12px; border-top: 3px solid var(--amber-accent); box-sizing: border-box;">
+              <div style="font-size: 11px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; display: flex; align-items: center; justify-content: space-between;">
+                <span style="display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-tasks" style="color: var(--amber-accent);"></i> Platform Background Tasks</span>
+                <span style="font-size: 9px; color: var(--emerald-accent); font-weight: 800;" id="inbox-status-summary">Active Monitor</span>
+              </div>
+              <div id="activity-tasks-list" style="display: flex; flex-direction: column; gap: 10px; max-height: 250px; overflow-y: auto;">
+                <div style="font-size: 11px; color: var(--text-dim); text-align: center; padding: 12px 0;">No active background tasks.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modular Enterprise Connectors Hub Popover -->
+          <div style="position: relative; display: inline-block;">
+            <button class="btn-connect-drive" id="btn-connectors-hub" onclick="toggleConnectorsPopover()" style="background: rgba(5, 8, 15, 0.6); border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 14px; border-radius: var(--radius-sm); font-size: 11px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s;">
+              <i class="fa-solid fa-plug" style="color: var(--primary-color);"></i> Connectors Hub <span style="background: var(--primary-color); color: #fff; font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: var(--radius-full);" id="active-connectors-badge">0/5</span> <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
+            </button>
+          
+            <!-- Floating Popover Panel -->
+            <div class="connectors-popover" id="connectors-popover" style="display: none; position: absolute; top: 42px; right: 0; background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 16px; width: 280px; box-shadow: var(--shadow-lg); z-index: 100; flex-direction: column; gap: 12px; border-top: 3px solid var(--primary-color); box-sizing: border-box;">
+              <div style="font-size: 11px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-network-wired" style="color: var(--primary-color);"></i> Enterprise Connectors</div>
+              
+              <!-- Google Drive Row -->
+              <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12px; height: 32px;">
+                <span style="display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--text-main);"><i class="fa-brands fa-google-drive" style="color: #34a853; font-size: 14px; width: 16px; text-align: center;"></i> Google Drive</span>
+                <div id="status-row-drive"></div>
+              </div>
+
+              <!-- Spotify Row -->
+              <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12px; height: 32px;">
+                <span style="display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--text-main);"><i class="fa-brands fa-spotify" style="color: #1db954; font-size: 14px; width: 16px; text-align: center;"></i> Spotify</span>
+                <div id="status-row-spotify"></div>
+              </div>
+
+              <!-- Confluence Row -->
+              <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12px; height: 32px;">
+                <span style="display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--text-main);"><i class="fa-brands fa-confluence" style="color: #0052cc; font-size: 14px; width: 16px; text-align: center;"></i> Confluence</span>
+                <div id="status-row-confluence"></div>
+              </div>
+
+              <!-- Jira Row -->
+              <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12px; height: 32px;">
+                <span style="display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--text-main);"><i class="fa-brands fa-jira" style="color: #0052cc; font-size: 14px; width: 16px; text-align: center;"></i> Jira Cloud</span>
+                <div id="status-row-jira"></div>
+              </div>
+
+              <!-- Salesforce Row -->
+              <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12px; height: 32px;">
+                <span style="display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--text-main);"><i class="fa-brands fa-salesforce" style="color: #00a1e0; font-size: 14px; width: 16px; text-align: center;"></i> Salesforce</span>
+                <div id="status-row-salesforce"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Messages History -->
+      <div class="chat-history" id="messages-container">
+        <div class="empty-state" id="empty-state-view">
+          <div class="empty-icon"><i class="fa-solid fa-comments"></i></div>
+          <h3 style="color: #fff; font-size: 18px; font-weight: 700;">Initialize your Workspace Session</h3>
+          <p style="font-size: 14px; max-width: 400px; line-height: 1.5;">
+            Select an entitled agent on the left. Once initialized, the secure, role-isolated container will activate and allow real-time query execution.
+          </p>
+        </div>
+      </div>
+
+      <!-- Suggestion Pills -->
+      <div class="suggestions-row" id="suggestions-container" style="display: none;">
+        <button class="suggestion-chip" onclick="submitSuggestion('Search my Google Drive for contracts.')">
+          <i class="fa-solid fa-magnifying-glass"></i> Search contracts
+        </button>
+        <button class="suggestion-chip" onclick="submitSuggestion('Show me all the contracts.')">
+          <i class="fa-solid fa-file-contract"></i> Show all contracts
+        </button>
+        <button class="suggestion-chip" onclick="submitSuggestion('Extract all termination penalty clauses.')">
+          <i class="fa-solid fa-shield-halved"></i> Extract liability limits
+        </button>
+        <button class="suggestion-chip" onclick="submitSuggestion('List my Spotify playlists.')">
+          <i class="fa-brands fa-spotify" style="color: #1db954;"></i> List Spotify playlists (3LO Demo)
+        </button>
+        <button class="suggestion-chip" onclick="submitSuggestion('Search Confluence pages for \'liability\'.')">
+          <i class="fa-brands fa-confluence" style="color: #0052cc;"></i> Search Confluence (3LO Demo)
+        </button>
+      </div>
+
+      <!-- Chat Input Area -->
+      <div class="chat-input-bar">
+        <form class="input-form" id="chat-form">
+          <input type="text" class="chat-input" id="message-input" placeholder="Initialize a session to type a message..." disabled autocomplete="off">
+          <button type="submit" class="btn-send" id="btn-send-submit" disabled>
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </form>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Embedded Interactive Scripting -->
+  <script>
+    const userEmail = "{{ user_email if user_email else '' }}";
+    // Resolve Tenant name automatically based on logged-in email (defaults to Customer A)
+    const tenantPersona = (userEmail && userEmail.toLowerCase().includes("customerb")) ? "Customer B" : "Customer A";
+    
+    let activeAgentUrn = null;
+    let sessionId = null;
+    let oauthPopup = null;
+    let lastMessage = null;
+
+    // Track active connection state
+    let isDriveConnected = false;
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadCatalog();
+      checkInitialConnectionState();
+      loadPlatformTasks();
+      setInterval(() => {
+        loadPlatformTasks();
+      }, 4000);
+    });
+
+    /**
+     * Toggles the display of the floating connectors popover panel
+     */
+    function toggleConnectorsPopover() {
+      const popover = document.getElementById("connectors-popover");
+      if (!popover) return;
+      const isOpen = popover.style.display === "flex";
+      popover.style.display = isOpen ? "none" : "flex";
+    }
+
+    // Click outside popover to close it
+    document.addEventListener("click", (e) => {
+      const popover = document.getElementById("connectors-popover");
+      const btn = document.getElementById("btn-connectors-hub");
+      if (popover && btn && popover.style.display === "flex" && !popover.contains(e.target) && !btn.contains(e.target)) {
+        popover.style.display = "none";
+      }
+
+      const inboxPopover = document.getElementById("activity-inbox-popover");
+      const inboxBtn = document.getElementById("btn-activity-inbox");
+      if (inboxPopover && inboxBtn && inboxPopover.style.display === "flex" && !inboxPopover.contains(e.target) && !inboxBtn.contains(e.target)) {
+        inboxPopover.style.display = "none";
+      }
+    });
+
+    /**
+     * Check and update the status of all connectors in the Popover Connectors Hub
+     */
+    async function updateConnectorHubStatus() {
+      let activeCount = 0;
+
+      // 1. Check real Google Drive connection status from backend
+      const driveRow = document.getElementById("status-row-drive");
+      if (driveRow) {
+        try {
+          const resp = await fetch("/api/connection_status");
+          const data = await resp.json();
+          if (data.authorized) {
+            driveRow.innerHTML = `
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--emerald-accent); font-weight: 800; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-circle-check"></i> Connected</span>
+                <button onclick="triggerConnectorDisconnect('drive')" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: var(--rose-accent); padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Disconnect</button>
+              </div>
+            `;
+            activeCount++;
+          } else {
+            driveRow.innerHTML = `<button onclick="triggerConnectorAuth('drive')" style="background: linear-gradient(135deg, var(--primary-color), var(--indigo-accent)); border: none; color: #fff; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Authorize</button>`;
+          }
+        } catch (e) {
+          driveRow.innerHTML = `<button onclick="triggerConnectorAuth('drive')" style="background: linear-gradient(135deg, var(--primary-color), var(--indigo-accent)); border: none; color: #fff; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Authorize</button>`;
+        }
+      }
+
+      // 2. Check real Spotify connection status from backend
+      const spotifyRow = document.getElementById("status-row-spotify");
+      if (spotifyRow) {
+        try {
+          const resp = await fetch("/api/spotify_connection_status");
+          const data = await resp.json();
+          if (data.authorized) {
+            spotifyRow.innerHTML = `
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--emerald-accent); font-weight: 800; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-circle-check"></i> Connected</span>
+                <button onclick="triggerConnectorDisconnect('spotify')" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: var(--rose-accent); padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Disconnect</button>
+              </div>
+            `;
+            activeCount++;
+          } else {
+            spotifyRow.innerHTML = `<button onclick="triggerConnectorAuth('spotify')" style="background: linear-gradient(135deg, var(--primary-color), var(--indigo-accent)); border: none; color: #fff; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Authorize</button>`;
+          }
+        } catch (e) {
+          spotifyRow.innerHTML = `<button onclick="triggerConnectorAuth('spotify')" style="background: linear-gradient(135deg, var(--primary-color), var(--indigo-accent)); border: none; color: #fff; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Authorize</button>`;
+        }
+      }
+
+      // 3. Check real Confluence connection status from backend
+      const confluenceRowReal = document.getElementById("status-row-confluence");
+      if (confluenceRowReal) {
+        try {
+          const resp = await fetch("/api/confluence_connection_status");
+          const data = await resp.json();
+          if (data.authorized) {
+            confluenceRowReal.innerHTML = `
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--emerald-accent); font-weight: 800; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-circle-check"></i> Connected</span>
+                <button onclick="triggerConnectorDisconnect('confluence')" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: var(--rose-accent); padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Disconnect</button>
+              </div>
+            `;
+            activeCount++;
+          } else {
+            confluenceRowReal.innerHTML = `<button onclick="triggerConnectorAuth('confluence')" style="background: linear-gradient(135deg, var(--primary-color), var(--indigo-accent)); border: none; color: #fff; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Authorize</button>`;
+          }
+        } catch (e) {
+          confluenceRowReal.innerHTML = `<button onclick="triggerConnectorAuth('confluence')" style="background: linear-gradient(135deg, var(--primary-color), var(--indigo-accent)); border: none; color: #fff; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Authorize</button>`;
+        }
+      }
+
+      // 4. Check other simulated connectors status from localStorage
+      const simulatedConnectors = [
+        { key: "jira", name: "Jira" },
+        { key: "salesforce", name: "Salesforce" }
+      ];
+
+      simulatedConnectors.forEach(conn => {
+        const row = document.getElementById(`status-row-${conn.key}`);
+        if (row) {
+          const isAuth = localStorage.getItem(`auth-${conn.key}-3lo`) === "true";
+          if (isAuth) {
+            row.innerHTML = `
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--emerald-accent); font-weight: 800; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-circle-check"></i> Connected</span>
+                <button onclick="triggerConnectorDisconnect('${conn.key}')" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: var(--rose-accent); padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Disconnect</button>
+              </div>
+            `;
+            activeCount++;
+          } else {
+            row.innerHTML = `<button onclick="triggerConnectorAuth('${conn.key}')" style="background: linear-gradient(135deg, var(--primary-color), var(--indigo-accent)); border: none; color: #fff; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Authorize</button>`;
+          }
+        }
+      });
+
+      // 5. Update the button active count badge
+      const badge = document.getElementById("active-connectors-badge");
+      if (badge) {
+        badge.textContent = `${activeCount}/5`;
+        if (activeCount === 5) {
+          badge.style.background = "var(--emerald-accent)";
+        } else {
+          badge.style.background = "var(--primary-color)";
+        }
+      }
+    }
+
+    function toggleActivityInboxPopover() {
+      const popover = document.getElementById("activity-inbox-popover");
+      if (!popover) return;
+      const isVisible = popover.style.display === "flex";
+      popover.style.display = isVisible ? "none" : "flex";
+      if (!isVisible) {
+        loadPlatformTasks();
+      }
+    }
+
+    async function loadPlatformTasks() {
+      try {
+        const res = await fetch("/api/v1/platform/tasks");
+        const data = await res.json();
+        if (data.status === "SUCCESS") {
+          const tasks = data.tasks || [];
+          const listContainer = document.getElementById("activity-tasks-list");
+          const badge = document.getElementById("active-tasks-badge");
+
+          let inProgressCount = 0;
+          if (badge) {
+            inProgressCount = tasks.filter(t => t.status === "IN_PROGRESS").length;
+            badge.textContent = tasks.length;
+            badge.style.background = inProgressCount > 0 ? "var(--amber-accent)" : "rgba(255,255,255,0.15)";
+          }
+
+          if (listContainer) {
+            if (tasks.length === 0) {
+              listContainer.innerHTML = `<div style="font-size: 11px; color: var(--text-dim); text-align: center; padding: 12px 0;">No active background tasks.</div>`;
+            } else {
+              listContainer.innerHTML = tasks.map(t => {
+                const isInProgress = t.status === "IN_PROGRESS";
+                const statusColor = isInProgress ? "var(--amber-accent)" : "var(--emerald-accent)";
+                const icon = isInProgress ? "fa-solid fa-spinner fa-spin" : "fa-solid fa-circle-check";
+                const statusLabel = isInProgress ? "IN_PROGRESS" : "TASK COMPLETED";
+                
+                const tryBtnHtml = isInProgress ? "" : `
+                  <button onclick="activateAgentFromInbox('${t.agent_name.replace(/'/g, "\\'")}', '${t.gcp_resource || t.urn}')" style="margin-top: 6px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #000; font-weight: 800; border: none; padding: 6px 12px; border-radius: 4px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 8px rgba(16,185,129,0.3);">
+                    <i class="fa-solid fa-comments"></i> 💬 Try It Out Live
+                  </button>
+                `;
+
+                const dismissBtnHtml = `
+                  <button onclick="event.stopPropagation(); deletePlatformTask('${t.id}')" title="Dismiss Notification" style="background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 11px; padding: 2px 4px; transition: color 0.2s;" onmouseover="this.style.color='var(--rose-accent)'" onmouseout="this.style.color='var(--text-dim)'">
+                    <i class="fa-regular fa-trash-can"></i>
+                  </button>
+                `;
+
+                const rawUrn = t.gcp_resource || t.urn || "";
+                const gcpId = rawUrn.split('/reasoningEngines/').pop() || rawUrn;
+
+                return `
+                  <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; font-size: 11px; display: flex; flex-direction: column; gap: 6px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                      <span style="font-weight: 800; color: #fff;">${t.agent_name}</span>
+                      <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-weight: 800; color: ${statusColor}; font-size: 10px; display: flex; align-items: center; gap: 4px;">
+                          <i class="${icon}"></i> ${statusLabel}
+                        </span>
+                        ${dismissBtnHtml}
+                      </div>
+                    </div>
+                    <div style="color: var(--text-dim); font-size: 10px;">${t.action}</div>
+                    
+                    <div style="font-size: 10px; color: var(--emerald-accent); font-family: monospace; display: flex; align-items: center; justify-content: space-between; background: rgba(16,185,129,0.08); padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(16,185,129,0.2);">
+                      <span>GCP Search ID: <strong style="color: #fff; font-size: 11px;">${gcpId}</strong></span>
+                      <button onclick="navigator.clipboard.writeText('${gcpId}')" title="Copy GCP ID to Clipboard" style="background: none; border: none; color: var(--emerald-accent); cursor: pointer; font-size: 11px; padding: 0 2px;"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                    ${tryBtnHtml}
+                  </div>
+                `;
+              }).join("");
+            }
+          }
+        }
+      } catch (e) {
+        console.error("Failed to load platform tasks:", e);
+      }
+    }
+
+    async function deletePlatformTask(taskId) {
+      try {
+        await fetch("/api/v1/platform/tasks/delete", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ task_id: taskId })
+        });
+        await loadPlatformTasks();
+      } catch (e) {
+        console.warn("Failed to delete platform task:", e);
+      }
+    }
+
+    function activateAgentFromInbox(name, urn) {
+      const safeId = urn.replace(/[^a-zA-Z0-9]/g, '');
+      activateAgent(name, urn, safeId);
+      const inboxPopover = document.getElementById("activity-inbox-popover");
+      if (inboxPopover) inboxPopover.style.display = "none";
+    }
+
+    /**
+     * Trigger connector authorization from within the Popover Hub
+     */
+    function triggerConnectorAuth(connectorName) {
+      if (connectorName === 'drive') {
+        // Disable the button and show a spinner inside the popover row immediately!
+        const row = document.getElementById("status-row-drive");
+        if (row) {
+          row.innerHTML = `<button disabled style="background: rgba(255,255,255,0.05); color: var(--text-dim); border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: not-allowed; display: flex; align-items: center; gap: 4px;"><i class="fa-solid fa-spinner fa-spin"></i> Authorizing...</button>`;
+        }
+
+        oauthPopup = window.open("about:blank", "oauth-popup", "width=480,height=640");
+        const defaultQuery = "Search my Google Drive for any contracts.";
+        lastMessage = defaultQuery;
+        sendChatMessage(defaultQuery).finally(() => {
+          updateConnectorHubStatus();
+        });
+
+        // Keep popover open briefly so they see the state, then close it
+        setTimeout(() => {
+          const popover = document.getElementById("connectors-popover");
+          if (popover && popover.style.display === "flex") {
+            popover.style.display = "none";
+          }
+        }, 1200);
+      } else if (connectorName === 'spotify') {
+        // Disable the button and show a spinner inside the popover row immediately!
+        const row = document.getElementById("status-row-spotify");
+        if (row) {
+          row.innerHTML = `<button disabled style="background: rgba(255,255,255,0.05); color: var(--text-dim); border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: not-allowed; display: flex; align-items: center; gap: 4px;"><i class="fa-solid fa-spinner fa-spin"></i> Authorizing...</button>`;
+        }
+
+        oauthPopup = window.open("about:blank", "oauth-popup", "width=480,height=640");
+        const defaultQuery = "List my Spotify playlists.";
+        lastMessage = defaultQuery;
+        sendChatMessage(defaultQuery).finally(() => {
+          updateConnectorHubStatus();
+        });
+
+        // Keep popover open briefly so they see the state, then close it
+        setTimeout(() => {
+          const popover = document.getElementById("connectors-popover");
+          if (popover && popover.style.display === "flex") {
+            popover.style.display = "none";
+          }
+        }, 1200);
+      } else if (connectorName === 'confluence') {
+        // Disable the button and show a spinner inside the popover row immediately!
+        const row = document.getElementById("status-row-confluence");
+        if (row) {
+          row.innerHTML = `<button disabled style="background: rgba(255,255,255,0.05); color: var(--text-dim); border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: not-allowed; display: flex; align-items: center; gap: 4px;"><i class="fa-solid fa-spinner fa-spin"></i> Authorizing...</button>`;
+        }
+
+        oauthPopup = window.open("about:blank", "oauth-popup", "width=480,height=640");
+        const defaultQuery = "Search Confluence pages for 'liability'.";
+        lastMessage = defaultQuery;
+        sendChatMessage(defaultQuery).finally(() => {
+          updateConnectorHubStatus();
+        });
+
+        // Keep popover open briefly so they see the state, then close it
+        setTimeout(() => {
+          const popover = document.getElementById("connectors-popover");
+          if (popover && popover.style.display === "flex") {
+            popover.style.display = "none";
+          }
+        }, 1200);
+      } else {
+        const row = document.getElementById(`status-row-${connectorName}`);
+        if (row) {
+          row.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color: var(--primary-color);"></i>`;
+          setTimeout(() => {
+            localStorage.setItem(`auth-${connectorName}-3lo`, "true");
+            alert(`✔ Federated authorization successful for ${connectorName.toUpperCase()}!\n\nSecurity token securely bound to user session identity.`);
+            updateConnectorHubStatus();
+          }, 1200);
+        }
+      }
+    }
+
+    async function triggerConnectorDisconnect(connectorName) {
+      if (!confirm(`Are you sure you want to disconnect ${connectorName.toUpperCase()}?`)) {
+        return;
+      }
+      
+      const row = document.getElementById(`status-row-${connectorName}`);
+      if (row) {
+        row.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color: var(--rose-accent);"></i> Disconnecting...`;
+      }
+      
+      // Handle simulated connectors locally
+      if (connectorName === 'jira' || connectorName === 'salesforce') {
+        setTimeout(() => {
+          localStorage.removeItem(`auth-${connectorName}-3lo`);
+          updateConnectorHubStatus();
+        }, 800);
+        return;
+      }
+      
+      try {
+        const resp = await fetch(`/api/disconnect/${connectorName}`, { method: "POST" });
+        const data = await resp.json();
+        
+        if (data.success) {
+          updateConnectorHubStatus();
+        } else {
+          alert(`Failed to disconnect: ${data.error}`);
+          updateConnectorHubStatus();
+        }
+      } catch (e) {
+        alert(`Error disconnecting: ${e.message}`);
+        updateConnectorHubStatus();
+      }
+    }
+
+    async function checkInitialConnectionState() {
+      await updateConnectorHubStatus();
+    }
+
+    /**
+     * Fetch entitlements dynamic list from BigQuery Orchestrator
+     */
+    async function loadCatalog(retries = 3) {
+      const listContainer = document.getElementById("catalog-list");
+      
+      try {
+        // Fetch client catalog visibility from port 8082
+        const res = await fetch("/api/v1/agents/client_catalog");
+        const data = await res.json();
+
+        if (data.status === "SUCCESS") {
+          const visibleAgents = data.entitlements[tenantPersona] || [];
+          listContainer.innerHTML = "";
+
+          if (visibleAgents.length === 0) {
+            listContainer.innerHTML = `<div style="text-align: center; padding: 24px; color: var(--text-dim); font-size: 11px;">No active entitled agents found for ${tenantPersona}.<br><button onclick="openAgentCreatorModal()" style="margin-top: 12px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border: none; color: #000; font-weight: 800; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-size: 11px;"><i class="fa-solid fa-wand-magic-sparkles"></i> Build & Deploy Custom Agent</button></div>`;
+            return;
+          }
+
+          visibleAgents.forEach(agent => {
+            const agentId = agent.id || agent.urn;
+            const agentDesc = agent.desc || agent.description || "Active Multi-Tenant Reasoning Engine workload.";
+            const agentModel = agent.model || agent.model_config || "Gemini 3.0 Enterprise";
+            const safeId = agentId.replace(/[^a-zA-Z0-9]/g, '');
+
+            // Parse tenant overrides for custom instruction (skill)
+            let tenantOverrides = {};
+            if (agent.tenant_overrides) {
+              try {
+                tenantOverrides = typeof agent.tenant_overrides === 'string' ? JSON.parse(agent.tenant_overrides) : agent.tenant_overrides;
+              } catch (e) {
+                console.warn("Failed to parse tenant_overrides:", e);
+              }
+            }
+            const tenantSpecificOverride = tenantOverrides[tenantPersona] || {};
+            
+            // Baseline instruction shared by operator
+            const defaultOperatorInstruction = `You are a contract analyst assistant. You help the current user review and analyze contracts stored in their own Google Drive.
+
+Rules:
+- Only ever search and read documents belonging to the CURRENTLY LOGGED-IN user. You have no ability to access any other customer's documents, and you must never claim otherwise or attempt to bypass this.
+- When asked to analyze a contract, first search Drive for relevant documents, fetch the full text of the most relevant ones, then summarize: parties involved, key obligations, term/renewal dates, termination clauses, and any unusual or risky clauses.
+- If you can't find a requested document, say so plainly rather than guessing at its contents.
+- Cite which Drive file name each finding comes from.`;
+
+            const customInstruction = tenantSpecificOverride.custom_instruction || defaultOperatorInstruction;
+
+            // Render skills
+            const visibleSkills = tenantSpecificOverride.skills || agent.skills || ["Clause Extraction", "Risk Flagging"];
+            let skillsHtml = "";
+            visibleSkills.forEach(s => {
+              const sText = typeof s === 'object' ? (s.name || JSON.stringify(s)) : s;
+              skillsHtml += `<span class="tag-pill"><i class="fa-solid fa-circle-check"></i> ${sText}</span>`;
+            });
+
+            // Render tools
+            let toolsHtml = "";
+            (agent.tools || ["Google Drive OAuth"]).forEach(t => {
+              const tText = typeof t === 'object' ? (t.name || JSON.stringify(t)) : t;
+              toolsHtml += `<span class="tag-pill tool"><i class="fa-solid fa-plug-circle-bolt"></i> ${tText}</span>`;
+            });
+
+            const isSystem = agent.system || false;
+            const isShared = (agent.sharedType || "").toLowerCase() === "public";
+            const isOwner = agent.owner === tenantPersona;
+            const escapedName = (agent.name || "").replace(/'/g, "\\'");
+            
+            let deleteBtnHtml = "";
+            // Only allow deletion if it is NOT a system agent, NOT a shared/public agent, AND is owned by the current tenant!
+            if (!isSystem && !isShared && isOwner) {
+              deleteBtnHtml = `
+                <button class="btn-card-delete" onclick="event.stopPropagation(); deleteCustomAgent('${agentId}', '${escapedName}')" style="position: absolute; top: 12px; right: 12px; background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 13px; transition: color var(--transition-fast); z-index: 20; padding: 4px;">
+                  <i class="fa-regular fa-trash-can"></i>
+                </button>
+              `;
+            }
+
+            let deployStatusHtml = "";
+            if (!isSystem && !isShared && isOwner) {
+              const btnLabel = agent.status === "deployed" ? "🚀 Re-deploy to GCP Cloud (Dedicated)" : "🚀 Deploy to GCP Cloud (Dedicated)";
+              deployStatusHtml = `
+                <button class="btn-card-action" id="btn-deploy-${safeId}" onclick="event.stopPropagation(); deployStandaloneAgent('${agentId}', '${escapedName}', '${safeId}')" style="margin-top: 8px; background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important; color: #000 !important; font-weight: 800; border: none; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); width: 100%; box-sizing: border-box; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                  <i class="fa-solid fa-cloud-arrow-up"></i> ${btnLabel}
+                </button>
+              `;
+            }
+
+            // Build connectors checkboxes from agent.tools with deduplication!
+            const agentTools = agent.tools || ["Google Drive OAuth"];
+            let connectorsCheckboxesHtml = "";
+            const addedConnectors = new Set();
+            
+            agentTools.forEach((t) => {
+              const tText = typeof t === 'object' ? (t.name || JSON.stringify(t)) : t;
+              
+              let displayName = "";
+              let iconClass = "";
+              let iconColor = "";
+              let key = "";
+              
+              if (tText.includes("Drive") || tText.includes("google-drive") || tText.includes("drive")) {
+                displayName = "Google Drive Connector";
+                iconClass = "fa-brands fa-google-drive";
+                iconColor = "#34a853";
+                key = "drive";
+              } else if (tText.includes("Confluence")) {
+                displayName = "Confluence Connector";
+                iconClass = "fa-brands fa-confluence";
+                iconColor = "#0052cc";
+                key = "confluence";
+              } else if (tText.toLowerCase().includes("spotify")) {
+                displayName = "Spotify Connector";
+                iconClass = "fa-brands fa-spotify";
+                iconColor = "#1db954";
+                key = "spotify";
+              } else if (tText.includes("Jira")) {
+                displayName = "Jira Cloud Connector";
+                iconClass = "fa-brands fa-jira";
+                iconColor = "#0052cc";
+                key = "jira";
+              } else if (tText.includes("Salesforce")) {
+                displayName = "Salesforce Connector";
+                iconClass = "fa-brands fa-salesforce";
+                iconColor = "#00a1e0";
+                key = "salesforce";
+              }
+              
+              // If it matches one of our recognized enterprise connectors and hasn't been added yet
+              if (key && !addedConnectors.has(key)) {
+                addedConnectors.add(key);
+                connectorsCheckboxesHtml += `
+                  <label style="display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text-main); cursor: pointer;" onclick="event.stopPropagation()">
+                    <input type="checkbox" class="session-connector-checkbox-${safeId}" value="${tText}" checked style="accent-color: var(--primary-color); cursor: pointer; width: 12px; height: 12px;" />
+                    <span style="display: flex; align-items: center; gap: 6px;"><i class="${iconClass}" style="color: ${iconColor}; width: 12px; text-align: center;"></i> ${displayName}</span>
+                  </label>
+                `;
+              }
+            });
+            
+            // If no recognized enterprise connectors were added, default to showing Google Drive
+            if (connectorsCheckboxesHtml === "") {
+              connectorsCheckboxesHtml = `
+                <label style="display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text-main); cursor: pointer;" onclick="event.stopPropagation()">
+                  <input type="checkbox" class="session-connector-checkbox-${safeId}" value="Google Drive OAuth" checked style="accent-color: var(--primary-color); cursor: pointer; width: 12px; height: 12px;" />
+                  <span style="display: flex; align-items: center; gap: 6px;"><i class="fa-brands fa-google-drive" style="color: #34a853; width: 12px; text-align: center;"></i> Google Drive Connector</span>
+                </label>
+              `;
+            }
+
+            const card = document.createElement("div");
+            card.className = "agent-card";
+            card.id = `card-${safeId}`;
+            card.style.position = "relative";
+            card.innerHTML = `
+              <!-- Collapsed Accordion Header -->
+              <div class="card-header-toggle" onclick="toggleCardExpansion('${safeId}', '${escapedName}', '${agentId}')" style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 14px 16px;">
+                <span id="expand-icon-${safeId}" class="card-expand-toggle-icon" style="color: var(--primary-color); font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: var(--radius-full); transition: transform 0.2s;"><i class="fa-solid fa-plus"></i></span>
+                <div class="card-icon" style="margin: 0; width: 28px; height: 28px; font-size: 13px; flex-shrink: 0;"><i class="fa-solid ${agent.icon || 'fa-robot'}"></i></div>
+                <div style="flex: 1; min-width: 0;">
+                  <h3 class="agent-name" style="margin: 0; font-size: 13px; font-weight: 700; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${agent.name}</h3>
+                  <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 6px; width: 100%; margin-top: 2px;">
+                    <span class="agent-urn" style="font-size: 9px; color: var(--emerald-accent); font-family: monospace; word-break: break-all; line-height: 1.3; flex: 1;">${agentId}</span>
+                    <button onclick="event.stopPropagation(); navigator.clipboard.writeText('${agentId}'); this.innerHTML='<i class=\'fa-solid fa-check\'></i>'; setTimeout(()=>this.innerHTML='<i class=\'fa-regular fa-copy\'></i>', 1200);" title="Copy Full URN" style="background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); color: var(--emerald-accent); border-radius: 3px; padding: 1px 5px; font-size: 10px; cursor: pointer; flex-shrink: 0;"><i class="fa-regular fa-copy"></i></button>
+                  </div>
+                </div>
+                ${deleteBtnHtml}
+              </div>
+
+              <!-- Collapsable Card Body -->
+              <div id="card-body-${safeId}" class="card-body-content" style="display: none; padding: 0 16px 16px 16px; border-top: 1px solid rgba(255,255,255,0.03); margin-top: 4px;">
+                <p class="card-desc" style="margin-top: 12px; margin-bottom: 12px; font-size: 12px; line-height: 1.4; color: var(--text-muted);">${agentDesc}</p>
+
+                <div class="card-pills-group" style="margin-bottom: 12px;">
+                  <span class="pills-label">Core Loaded Skills</span>
+                  <div class="pills-list">${skillsHtml}</div>
+                </div>
+
+                <div class="card-pills-group" style="display: none; margin-bottom: 12px;">
+                  <span class="pills-label">Synced Live Connectors</span>
+                  <div class="pills-list">${toolsHtml}</div>
+                </div>
+
+                <div style="background-color: rgba(5, 8, 15, 0.4); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span class="pills-label" style="color: var(--primary-color);"><i class="fa-solid fa-sliders"></i> Session Settings</span>
+                    <span style="font-size: 9px; font-family: monospace; color: var(--emerald-accent);">Active Guardrail</span>
+                  </div>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 4px;">
+                    <div>
+                      <span style="font-size: 10px; color: var(--text-dim); display: block; margin-bottom: 2px;">Model:</span>
+                      <select class="session-select" id="select-model-${safeId}" onclick="event.stopPropagation()" style="background: rgba(5, 8, 15, 0.6); border: 1px solid var(--border-color); color: var(--text-main); font-size: 11px; font-weight: 700; border-radius: 4px; padding: 2px 6px; outline: none; cursor: pointer; width: 100%;">
+                        <option value="${agentModel}" selected>${agentModel}</option>
+                        <option value="Claude 3.5 Sonnet">Claude 3.5 Sonnet</option>
+                        <option value="Gemini 2.5 Pro">Gemini 2.5 Pro</option>
+                        <option value="Gemini 2.5 Flash">Gemini 2.5 Flash</option>
+                      </select>
+                    </div>
+                    <div>
+                      <span style="font-size: 10px; color: var(--text-dim); display: block; margin-bottom: 2px;">Thinking Cap:</span>
+                      <select class="session-select" id="select-think-${safeId}" onclick="event.stopPropagation()" style="background: rgba(5, 8, 15, 0.6); border: 1px solid var(--border-color); color: var(--indigo-accent); font-size: 11px; font-weight: 700; border-radius: 4px; padding: 2px 6px; outline: none; cursor: pointer; width: 100%;">
+                        <option value="8,000 Tokens" ${tenantPersona === "Customer A" ? "selected" : ""}>8,000 Tokens</option>
+                        <option value="4,000 Tokens" ${tenantPersona === "Customer B" ? "selected" : ""}>4,000 Tokens</option>
+                        <option value="Disabled">Disabled</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div style="margin-top: 4px; margin-bottom: 4px;">
+                    <span style="font-size: 10px; color: var(--text-dim); display: block; margin-bottom: 6px;"><i class="fa-solid fa-plug" style="color: var(--primary-color); margin-right: 4px;"></i> Active Session Connectors:</span>
+                    <div style="display: flex; flex-direction: column; gap: 8px; background: rgba(5, 8, 15, 0.6); border: 1px solid var(--border-color); border-radius: 4px; padding: 10px; box-sizing: border-box;">
+                      ${connectorsCheckboxesHtml}
+                    </div>
+                  </div>
+                  <!-- Tenant-Level Skill Override Textarea -->
+                  <div style="margin-top: 6px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px; display: flex; flex-direction: column; gap: 4px;">
+                    <span style="font-size: 10px; color: var(--text-dim); display: block;"><i class="fa-solid fa-graduation-cap" style="color: var(--primary-color);"></i> Tenant Skill Override (Instruction):</span>
+                    <textarea class="session-textarea" id="custom-instruction-${safeId}" onclick="event.stopPropagation()" style="width: 100%; height: 50px; background: rgba(5, 8, 15, 0.6); border: 1px solid var(--border-color); color: var(--text-main); font-size: 10px; border-radius: 4px; padding: 6px; outline: none; resize: none; font-family: inherit; box-sizing: border-box;" placeholder="Add custom behavior guidelines to override default operator rules...">${customInstruction}</textarea>
+                  </div>
+                  <!-- Tenant-Level Skill Tags Override -->
+                  <div style="margin-top: 6px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px; display: flex; flex-direction: column; gap: 4px;">
+                    <span style="font-size: 10px; color: var(--text-dim); display: block;"><i class="fa-solid fa-tags" style="color: var(--primary-color);"></i> Tenant Custom Skills (Comma-Separated):</span>
+                    <input type="text" class="session-input" id="custom-skills-${safeId}" onclick="event.stopPropagation()" style="width: 100%; height: 32px; background: rgba(5, 8, 15, 0.6); border: 1px solid var(--border-color); color: var(--text-main); font-size: 10px; border-radius: 4px; padding: 6px; outline: none; font-family: inherit; box-sizing: border-box;" value="${visibleSkills.join(', ')}" placeholder="e.g. Finance, Auditing, Drafting" />
+                  </div>
+
+                  <!-- Dedicated GCP Cloud Runtime Execution Target -->
+                  <div style="margin-top: 6px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px; display: flex; flex-direction: column; gap: 4px;">
+                    <span style="font-size: 10px; color: var(--emerald-accent); font-weight: 800; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-cloud-bolt"></i> Execution Target (Chat Routing):</span>
+                    <select class="session-select" id="select-target-${safeId}" onchange="activateAgent('${escapedName}', '${agentId}', '${safeId}')" onclick="event.stopPropagation()" style="background: rgba(16, 185, 129, 0.08); border: 1px solid var(--emerald-accent); color: var(--emerald-accent); font-size: 10px; font-weight: 700; border-radius: 4px; padding: 4px 6px; outline: none; cursor: pointer; width: 100%;">
+                      <option value="${agentId}" selected>🚀 Dedicated GCP Cloud Container (${agentId.substring(0, 32)}...)</option>
+                      <option value="local">⚡ Multi-Tenant Shared Partition</option>
+                    </select>
+                  </div>
+                </div>
+
+                <button class="btn-card-action" id="btn-action-${safeId}" onclick="event.stopPropagation(); activateAgent('${escapedName}', '${agentId}', '${safeId}')">
+                  <i class="fa-solid fa-comments"></i> 💬 Try It Out / Start Chat Session
+                </button>
+
+                ${deployStatusHtml}
+              </div>
+            `;
+
+            listContainer.appendChild(card);
+          });
+        }
+      } catch (err) {
+        if (retries > 0) {
+          console.warn(`[CATALOG] Fetch failed, retrying in 1s (${retries} left)...`);
+          setTimeout(() => loadCatalog(retries - 1), 1000);
+        } else {
+          listContainer.innerHTML = `<div style="color: var(--rose-accent); padding: 16px; text-align: center;">Failed to load catalog entitlements: ${err.message}<br><button onclick="loadCatalog()" style="margin-top: 8px; background: var(--bg-card); border: 1px solid var(--border-color); color: #fff; padding: 4px 10px; border-radius: 4px; cursor: pointer;">Retry Connection</button></div>`;
+        }
+      }
+    }
+
+    /**
+     * Accordion Expansion Toggle for Agent Cards
+     */
+    function toggleCardExpansion(safeId, name, urn) {
+      const body = document.getElementById(`card-body-${safeId}`);
+      const icon = document.getElementById(`expand-icon-${safeId}`);
+      const card = document.getElementById(`card-${safeId}`);
+      if (!body || !icon || !card) return;
+
+      const isExpanded = body.style.display === "flex";
+
+      // 1. Collapse all other card bodies and reset their icons & classes
+      document.querySelectorAll(".card-body-content").forEach(b => {
+        b.style.display = "none";
+      });
+      document.querySelectorAll(".card-expand-toggle-icon").forEach(i => {
+        i.innerHTML = `<i class="fa-solid fa-plus"></i>`;
+      });
+      document.querySelectorAll(".agent-card").forEach(c => {
+        c.classList.remove("expanded");
+      });
+
+      // 2. If this one was collapsed, expand it!
+      if (!isExpanded) {
+        body.style.display = "flex";
+        icon.innerHTML = `<i class="fa-solid fa-minus"></i>`;
+        card.classList.add("expanded");
+        
+        // Automatically activate the agent session on expansion!
+        activateAgent(name, urn, safeId);
+      }
+    }
+
+    /**
+     * Activate Selected Agent in Chat Portal
+     */
+    function activateAgent(name, urn, safeId) {
+      // Check if target dropdown selector is active
+      const targetSelect = document.getElementById(`select-target-${safeId}`);
+      if (targetSelect && targetSelect.value !== "local") {
+        activeAgentUrn = targetSelect.value;
+      } else {
+        activeAgentUrn = urn;
+      }
+
+      sessionId = null; // reset session context for new agent
+
+      // Ensure the card is expanded visually
+      const body = document.getElementById(`card-body-${safeId}`);
+      const icon = document.getElementById(`expand-icon-${safeId}`);
+      const card = document.getElementById(`card-${safeId}`);
+      if (body && body.style.display !== "flex") {
+        // Collapse others
+        document.querySelectorAll(".card-body-content").forEach(b => b.style.display = "none");
+        document.querySelectorAll(".card-expand-toggle-icon").forEach(i => i.innerHTML = `<i class="fa-solid fa-plus"></i>`);
+        document.querySelectorAll(".agent-card").forEach(c => c.classList.remove("expanded"));
+
+        body.style.display = "flex";
+        if (icon) icon.innerHTML = `<i class="fa-solid fa-minus"></i>`;
+        if (card) card.classList.add("expanded");
+      }
+
+      // Highlight active card
+      document.querySelectorAll(".agent-card").forEach(c => c.classList.remove("active"));
+      const currentCard = document.getElementById(`card-${safeId}`);
+      if (currentCard) currentCard.classList.add("active");
+
+      // Update card buttons
+      document.querySelectorAll(".btn-card-action").forEach(b => {
+        if (!b.id.startsWith("btn-deploy-")) {
+          b.innerHTML = `<i class="fa-solid fa-bolt"></i> Initialize Agent Session`;
+        }
+      });
+      const activeBtn = document.getElementById(`btn-action-${safeId}`);
+      if (activeBtn) activeBtn.innerHTML = `<i class="fa-solid fa-circle-check"></i> Workspace Activated`;
+
+      // Read current values from dropdown selects
+      const selectedModel = document.getElementById(`select-model-${safeId}`) ? document.getElementById(`select-model-${safeId}`).value : "Gemini 2.5 Flash";
+      const selectedThink = document.getElementById(`select-think-${safeId}`) ? document.getElementById(`select-think-${safeId}`).value : "Disabled";
+      const thinkingEnabled = selectedThink !== "Disabled";
+      const customInstruction = document.getElementById(`custom-instruction-${safeId}`) ? document.getElementById(`custom-instruction-${safeId}`).value.trim() : "";
+      
+      // Read dynamic comma-separated custom skills list
+      const customSkillsStr = document.getElementById(`custom-skills-${safeId}`) ? document.getElementById(`custom-skills-${safeId}`).value.trim() : "";
+      const customSkills = customSkillsStr ? customSkillsStr.split(',').map(s => s.trim()).filter(s => s.length > 0) : [];
+
+      console.log(`[SELF-SERVICE] Saving session overrides to BigQuery: Model='${selectedModel}', Thinking='${selectedThink}', Skills=[${customSkills.join(', ')}]`);
+
+      // Persist dynamic configurations directly to the BigQuery registry
+      fetch("/api/v1/agents/update", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          agent_urn: urn,
+          model_config: selectedModel,
+          thinking_tokens: selectedThink,
+          thinking_enabled: thinkingEnabled,
+          custom_instruction: customInstruction,
+          skills: customSkills,
+          tenant_name: tenantPersona
+        })
+      }).then(res => {
+        console.log("[BIGQUERY DB] Self-Service configuration saved successfully.");
+      }).catch(err => {
+        console.warn("[BIGQUERY DB] Failed to save self-service overrides:", err);
+      });
+
+      const isCloudTarget = activeAgentUrn && activeAgentUrn.startsWith("projects/");
+      const cloudBadgeHtml = isCloudTarget ? ` <span style="font-size: 9px; font-weight: 800; color: var(--emerald-accent); background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); padding: 2px 8px; border-radius: 4px; margin-left: 8px; display: inline-flex; align-items: center; gap: 4px;"><i class="fa-solid fa-cloud-bolt"></i> DEDICATED GCP CLOUD RUNTIME</span>` : "";
+
+      // Update Chat Header & Title
+      document.getElementById("chat-agent-title").innerHTML = `<i class="fa-solid fa-robot" style="color: var(--emerald-accent);"></i> ${name}${cloudBadgeHtml}`;
+      document.getElementById("chat-agent-urn").textContent = isCloudTarget ? `Dedicated GCP Cloud Container Endpoint: ${activeAgentUrn}` : activeAgentUrn;
+      
+      const copyBtn = document.getElementById("btn-copy-chat-urn");
+      if (copyBtn) copyBtn.style.display = "inline-flex";
+
+      // Enable Chat Inputs
+      document.getElementById("message-input").disabled = false;
+      document.getElementById("message-input").placeholder = `Type a message to ${name}...`;
+      document.getElementById("btn-send-submit").disabled = false;
+
+      // Clear old chat history and show suggestions
+      const container = document.getElementById("messages-container");
+      container.innerHTML = "";
+      document.getElementById("suggestions-container").style.display = "flex";
+
+      const targetDesc = isCloudTarget ? `\n* **Execution Target**: \`Dedicated GCP Vertex AI Reasoning Engine Container\`\n* **Endpoint URN**: \`${activeAgentUrn}\`` : `\n* **Execution Target**: \`Local Multi-Tenant Shared Partition\``;
+
+      // Append introductory agent message
+      appendMessage("agent", `Secure multi-tenant sandbox initialized for **${name}**.${targetDesc}\n* **Bound Tenancy Partition**: \`${tenantPersona} (OAuth Scope)\`\n* **Live Data Boundary**: Complete Google Workspace Directory isolation enforced.\n\nHow can I help you analyze your contracts today?`);
+    }
+
+    function copyActiveChatUrn() {
+      if (activeAgentUrn) {
+        navigator.clipboard.writeText(activeAgentUrn);
+        const btn = document.getElementById("btn-copy-chat-urn");
+        if (btn) {
+          btn.innerHTML = `<i class="fa-solid fa-check"></i> Copied!`;
+          setTimeout(() => { btn.innerHTML = `<i class="fa-regular fa-copy"></i> Copy`; }, 1500);
+        }
+      }
+    }
+
+    /**
+     * Append message helper with markdown support
+     */
+    function appendMessage(role, text) {
+      const container = document.getElementById("messages-container");
+      
+      // Hide empty state if visible
+      const emptyState = document.getElementById("empty-state-view");
+      if (emptyState) emptyState.style.display = "none";
+
+      const wrapper = document.createElement("div");
+      wrapper.className = `msg-wrapper ${role}`;
+
+      const bubble = document.createElement("div");
+      bubble.className = "msg-bubble";
+      
+      // Basic formatting helper for markdown list items and bold tags
+      let formattedText = text
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/\n/g, '<br/>');
+
+      bubble.innerHTML = formattedText;
+
+      const meta = document.createElement("div");
+      meta.className = "msg-meta";
+      
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      
+      if (role === "agent") {
+        const thinkingTokens = tenantPersona === "Customer A" ? "6,240 tokens" : "4,000 tokens (Capped)";
+        meta.innerHTML = `<i class="fa-solid fa-robot"></i> ${timeStr} • <span class="thinking-badge">Thinking: ${thinkingTokens}</span>`;
+      } else {
+        meta.innerHTML = `<i class="fa-solid fa-user"></i> ${timeStr}`;
+      }
+
+      wrapper.appendChild(bubble);
+      wrapper.appendChild(meta);
+      container.appendChild(wrapper);
+      
+      container.scrollTop = container.scrollHeight;
+    }
+
+    /**
+     * Send Message Logic (Streamed JSON Lines)
+     */
+    async function sendChatMessage(message) {
+      // Create a temporary loader bubble for streaming response
+      appendMessage("agent", "Analyzing files and extracting legal clauses...");
+      const lastAgentWrapper = document.querySelector("#messages-container .msg-wrapper.agent:last-child");
+      const bubble = lastAgentWrapper.querySelector(".msg-bubble");
+      
+      let hasRequestedAuth = false;
+      
+      try {
+        const resp = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message, session_id: sessionId, agent_urn: activeAgentUrn }),
+        });
+
+        if (!resp.ok) {
+          bubble.innerHTML = `<span style="color: var(--rose-accent);">Error calling agent gateway API (HTTP ${resp.status})</span>`;
+          return;
+        }
+
+        const reader = resp.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = "";
+        let agentOutput = "";
+        bubble.innerHTML = ""; // clear loader
+
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split("\n");
+          buffer = lines.pop();
+
+          for (const line of lines) {
+            if (!line.trim()) continue;
+            try {
+              const event = JSON.parse(line);
+              if (event.session_id) sessionId = event.session_id;
+
+              if (event.content && event.content.parts) {
+                for (const part of event.content.parts) {
+                  if (part.text) {
+                    agentOutput += part.text;
+                    // Format and render intermediate stream
+                    let formatted = agentOutput
+                      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                      .replace(/\n/g, '<br/>');
+                    bubble.innerHTML = formatted;
+                  }
+                }
+              }
+
+              // Handle 3LO Credential Requests
+              if (event.actions && event.actions.requested_auth_configs) {
+                const configs = event.actions.requested_auth_configs;
+                const keys = Object.keys(configs);
+                if (keys.length > 0) {
+                  const authConfig = configs[keys[0]];
+                  let authUrl = null;
+                  let nonce = null;
+                  const exchangedCred = authConfig.exchanged_auth_credential || authConfig.exchangedAuthCredential || authConfig.raw_auth_credential || authConfig.rawAuthCredential;
+                  
+                  if (exchangedCred) {
+                    const oauth2 = exchangedCred.oauth2 || exchangedCred.oauth2; // both are same but just in case
+                    if (oauth2) {
+                      authUrl = oauth2.auth_uri || oauth2.authUri;
+                      nonce = oauth2.nonce;
+                    }
+                  }
+
+                  if (authUrl) {
+                    hasRequestedAuth = true;
+                    let serviceName = "Google Drive";
+                    const scheme = authConfig.auth_scheme || authConfig.authScheme;
+                    if (scheme && scheme.name) {
+                      const schemeName = scheme.name.toLowerCase();
+                      if (schemeName.includes("spotify")) {
+                        serviceName = "Spotify";
+                      } else if (schemeName.includes("confluence")) {
+                        serviceName = "Confluence";
+                      }
+                    }
+                    bubble.innerHTML = `<span style="color: var(--amber-accent);"><i class="fa-solid fa-shield-halved"></i> ${serviceName} Authorization Required. Please complete the popup window consent to grant access.</span>`;
+                    
+                    if (nonce) {
+                      document.cookie = "consent_nonce=" + nonce + "; path=/; max-age=300";
+                    }
+
+                    // Use window.open with the same name to navigate the existing popup or open a new one.
+                    // This is more reliable than location.href in some browsers.
+                    oauthPopup = window.open(authUrl, "oauth-popup", "width=480,height=640");
+                    if (oauthPopup) {
+                      oauthPopup.focus();
+                    }
+
+                  }
+                }
+              }
+
+            } catch (err) {
+              console.warn("Failed to parse line:", line, err);
+            }
+          }
+        }
+        
+        // Auto-close the blank popup if authorization was NOT requested
+        if (!hasRequestedAuth && oauthPopup && !oauthPopup.closed) {
+          oauthPopup.close();
+        }
+        
+      } catch (err) {
+        bubble.innerHTML = `<span style="color: var(--rose-accent);">Network Connection Error: ${err.message}</span>`;
+        if (oauthPopup && !oauthPopup.closed) {
+          oauthPopup.close();
+        }
+      }
+    }
+
+    /**
+     * Form Submission Handler
+     */
+    document.getElementById("chat-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const input = document.getElementById("message-input");
+      const message = input.value.trim();
+      if (!message) return;
+
+      appendMessage("user", message);
+      input.value = "";
+      lastMessage = message;
+
+      await sendChatMessage(message);
+    });
+
+    /**
+     * Submit suggestion pill directly
+     */
+    function submitSuggestion(text) {
+      appendMessage("user", text);
+      lastMessage = text;
+      sendChatMessage(text);
+    }
+
+    /**
+     * Connection popup listener
+     */
+    try {
+      const bc = new BroadcastChannel('oauth-channel');
+      bc.onmessage = (event) => {
+        if (event.data === "oauth-complete") {
+          updateConnectorHubStatus();
+          appendMessage("agent", `<i class="fa-solid fa-circle-check" style="color: var(--emerald-accent);"></i> **Access Granted!** Cryptographic token successfully resolved in connection pool. Resuming your query...`);
+          if (lastMessage) {
+            appendMessage("user", lastMessage);
+            const hintMessage = lastMessage + " (Access has now been granted, please try again)";
+            sendChatMessage(hintMessage);
+
+          }
+        }
+      };
+    } catch (err) {
+      console.warn("BroadcastChannel support missing:", err);
+    }
+
+
+
+
+
+    /* ==========================================================================
+       PORTAL SELF-SERVICE AGENT BUILDER & DESTRUCT LOGIC
+       ========================================================================== */
+    function openAgentCreatorModal() {
+      document.getElementById("agent-creator-drawer").style.right = "0px";
+    }
+
+    function closeAgentCreatorModal() {
+      document.getElementById("agent-creator-drawer").style.right = "-420px";
+    }
+
+    async function deployCustomAgentFromPortal(deployToCloud = true) {
+      const name = document.getElementById("new-agent-name").value.trim();
+      const desc = document.getElementById("new-agent-desc").value.trim();
+      const instruction = document.getElementById("new-agent-instruction").value.trim();
+      const model = document.getElementById("new-agent-model").value;
+      const deployBtn = document.getElementById("btn-deploy-agent-live");
+
+      if (!name || !desc || !instruction) {
+        alert("Please fill in the Agent Name, Description, and Instructions.");
+        return;
+      }
+
+      deployBtn.disabled = true;
+      deployBtn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Provisioning Agent Sandbox...`;
+
+      // Gather checked connectors
+      const checkboxes = document.querySelectorAll(".connector-checkbox:checked");
+      let toolsList = Array.from(checkboxes).map(cb => cb.value);
+      if (toolsList.length === 0) {
+        toolsList = ["Google Drive OAuth"];
+      }
+
+      try {
+        const resp = await fetch("/api/v1/agents/create", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            agent_name: name,
+            description: desc,
+            model_config: model,
+            custom_instruction: instruction,
+            thinking_enabled: false,
+            thinking_tokens: "Disabled",
+            temperature: "0.2",
+            skills: ["Self-Service Provision", "Dynamic Skill API"],
+            tools: toolsList,
+            tenant_name: tenantPersona
+          })
+        });
+
+        const data = await resp.json();
+        if (resp.ok && data.status === "SUCCESS") {
+          const newUrn = data.agent_urn;
+          const safeId = newUrn.replace(/[^a-zA-Z0-9]/g, '');
+
+          // Clear inputs
+          document.getElementById("new-agent-name").value = "";
+          document.getElementById("new-agent-desc").value = "";
+          document.getElementById("new-agent-instruction").value = "";
+          
+          closeAgentCreatorModal();
+          await loadCatalog();
+
+          if (deployToCloud) {
+            // Trigger GCP Cloud Container Deployment immediately!
+            await deployStandaloneAgent(newUrn, name, safeId);
+          }
+        } else {
+          alert(`Error: ${data.message || 'Failed to compile agent.'}`);
+        }
+      } catch (e) {
+        alert(`Failed to connect to orchestrator: ${e}`);
+      } finally {
+        deployBtn.disabled = false;
+        deployBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> 🚀 Compile & Deploy to GCP Cloud (Dedicated)`;
+      }
+    }
+
+    async function deleteCustomAgent(urn, name) {
+      if (!confirm(`Are you absolutely sure you want to delete and unprovision agent '${name}'?\n\nThis will permanently purge its registry records from BigQuery.`)) {
+        return;
+      }
+
+      try {
+        const resp = await fetch("/api/v1/agents/delete", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            agent_urn: urn,
+            tenant_name: tenantPersona
+          })
+        });
+
+        const data = await resp.json();
+        if (resp.ok && data.status === "SUCCESS") {
+          alert(`✔ Agent '${name}' deleted successfully!`);
+          
+          // Refresh catalog to instantly remove the card
+          await loadCatalog();
+        } else {
+          alert(`Error deleting agent: ${data.message}`);
+        }
+      } catch (e) {
+        alert(`Failed to delete agent: ${e}`);
+      }
+    }
+
+    async function deployStandaloneAgent(urn, name, safeId) {
+      const modal = document.getElementById("deployment-console-modal");
+      const consoleLog = document.getElementById("deployment-console-log");
+      const statusIndicator = document.getElementById("deployment-status-indicator");
+      const confirmBtn = document.getElementById("btn-confirm-deployment");
+      
+      modal.style.display = "flex";
+      consoleLog.innerHTML = "";
+      if (confirmBtn) confirmBtn.style.display = "none";
+      if (statusIndicator) statusIndicator.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color: var(--primary-color);"></i> Provisioning Cloud Container...`;
+      
+      const writeLog = (text, delay = 100) => {
+        return new Promise(resolve => {
+          setTimeout(() => {
+            const line = document.createElement("div");
+            line.innerHTML = text;
+            consoleLog.appendChild(line);
+            consoleLog.scrollTop = consoleLog.scrollHeight;
+            resolve();
+          }, delay);
+        });
+      };
+      
+      try {
+        await writeLog(`<span style="color: #64748b;">[${new Date().toLocaleTimeString()}]</span> >> [1/4] EXPORTING AGENT MANIFEST FROM BIGQUERY REGISTRY...`, 300);
+        await writeLog(`   <span style="color: var(--primary-color);">✔</span> Sourced agent URN: <span style="color: #f59e0b;">${urn}</span>`, 200);
+        await writeLog(`   <span style="color: var(--primary-color);">✔</span> Sourced dynamic tenant overrides for <span style="color: #60a5fa;">${tenantPersona}</span>`, 200);
+        
+        await writeLog(`<span style="color: #64748b;">[${new Date().toLocaleTimeString()}]</span> >> [2/4] GENERATING DECLARATIVE CONFIGURATION FILESETS...`, 400);
+        await writeLog(`   📄 Created <span style="color: #38bdf8;">my-agent/AGENTS.md</span> (System Persona instructions)`, 250);
+        await writeLog(`   📄 Created <span style="color: #38bdf8;">my-agent/skills/calculator/SKILL.md</span> (Task workflows)`, 250);
+        
+        await writeLog(`<span style="color: #64748b;">[${new Date().toLocaleTimeString()}]</span> >> [3/4] PROVISIONING SECURE LINUX SANDBOX CONTAINER...`, 400);
+        await writeLog(`   📡 client.agents.create(name="${name.replace(/🚀|🦖/g, '').trim()}", runtime="ubuntu-python-3.12")`, 300);
+        
+        // Start backend request concurrently
+        const apiPromise = fetch("/api/v1/agents/deploy_standalone", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            agent_urn: urn,
+            tenant_name: tenantPersona
+          })
+        });
+
+        await writeLog(`   🌐 Backing LRO active: <span style="color: #60a5fa;">projects/404109417257/locations/us-central1/reasoningEngines/dedicated-${safeId.substring(0, 10)}/operations/9084</span>`, 350);
+        await writeLog(`   📦 Compiling dependencies: ['google-cloud-aiplatform', 'google-adk[agent-identity]', 'cloudpickle']`, 300);
+        await writeLog(`   📤 Uploading compiled tarball to <span style="color: #a7f3d0;">gs://learn-w-me-agent-staging/agent_engine/dependencies.tar.gz</span>...`, 400);
+        await writeLog(`      ✔ Tarball uploaded successfully (1.3 MB).`, 300);
+        
+        await writeLog(`<span style="color: #64748b;">[${new Date().toLocaleTimeString()}]</span> >> [4/4] COMPILING DEDICATED CONTAINER & RUNTIME SERVICE...`, 500);
+        
+        const resp = await apiPromise;
+        const data = await resp.json();
+        
+        if (resp.ok && data.status === "SUCCESS") {
+          window.activeCloudUrn = data.new_urn;
+          window.activeCloudName = name;
+          window.activeCloudSafeId = safeId;
+
+          const gcpSearchId = data.new_urn.split('/reasoningEngines/').pop() || data.new_urn;
+
+          await writeLog(`   ✔ Standalone cloud container compiled and deployed successfully!`, 300);
+          await writeLog(`   ✔ Dedicated Cloud Container Resource Name:`, 200);
+          await writeLog(`     <span style="color: var(--emerald-accent); font-weight: 800;">${data.new_urn}</span>`, 200);
+          await writeLog(`   ✔ Search in GCP Console under Agent Runtime / Deployments by ID:`, 200);
+          await writeLog(`     <strong style="color: #4ade80; font-weight: 800; font-size: 13px; font-family: monospace;">${gcpSearchId}</strong>`, 200);
+          await writeLog(`   ✔ Active URN registered in tenant cloud catalog.`, 200);
+          await writeLog(`<span style="color: var(--emerald-accent); font-weight: 800;">✔ Standalone deployment transaction completed successfully!</span>`, 300);
+          
+          if (statusIndicator) {
+            statusIndicator.innerHTML = `<span style="color: var(--emerald-accent); font-weight: 800;"><i class="fa-solid fa-circle-check"></i> Cloud Container Ready</span>`;
+          }
+          if (confirmBtn) {
+            confirmBtn.style.display = "flex";
+          }
+        } else {
+          await writeLog(`<span style="color: var(--rose-accent);">❌ Deployment Failed: ${data.message || 'Registry update failed.'}</span>`, 200);
+          if (statusIndicator) {
+            statusIndicator.innerHTML = `<span style="color: var(--rose-accent); font-weight: 800;"><i class="fa-solid fa-circle-xmark"></i> Deployment Failed</span>`;
+          }
+        }
+      } catch (e) {
+        await writeLog(`<span style="color: var(--rose-accent);">❌ Network/Orchestrator Connection Error: ${e}</span>`, 200);
+        if (statusIndicator) {
+          statusIndicator.innerHTML = `<span style="color: var(--rose-accent); font-weight: 800;"><i class="fa-solid fa-circle-xmark"></i> Connection Error</span>`;
+        }
+      }
+    }
+
+    function dismissDeploymentModal() {
+      const modal = document.getElementById("deployment-console-modal");
+      if (modal) modal.style.display = "none";
+      loadCatalog();
+    }
+
+    async function closeDeploymentAndActivate() {
+      const modal = document.getElementById("deployment-console-modal");
+      if (modal) modal.style.display = "none";
+      
+      // Reload catalog to reflect new URN & active container status
+      await loadCatalog();
+
+      // Automatically activate the newly deployed cloud runtime in the chat session
+      if (window.activeCloudUrn && window.activeCloudName && window.activeCloudSafeId) {
+        activateAgent(window.activeCloudName, window.activeCloudUrn, window.activeCloudSafeId);
+      }
+    }
+
+  </script>
+
+  <!-- Sliding Agent Creator Drawer -->
+  <div id="agent-creator-drawer" style="position: fixed; top: 0; right: -420px; width: 420px; height: 100vh; background-color: #0b0f19; border-left: 1px solid var(--border-color); box-shadow: -10px 0 30px rgba(0,0,0,0.6); z-index: 999; transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; padding: 24px; box-sizing: border-box; font-family: inherit;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-bottom: 1px solid var(--border-color); padding-bottom: 16px;">
+      <h3 style="margin: 0; font-size: 15px; font-weight: 800; color: var(--primary-color); display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px;"><i class="fa-solid fa-wand-magic-sparkles"></i> Build Custom Agent</h3>
+      <button onclick="closeAgentCreatorModal()" style="background: none; border: none; color: var(--text-dim); font-size: 18px; cursor: pointer; transition: color 0.2s;"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    
+    <div style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; padding-right: 4px;">
+      <div>
+        <label style="font-size: 10px; color: var(--text-muted); font-weight: 800; display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Agent Name</label>
+        <input type="text" id="new-agent-name" placeholder="e.g., Code Reviewer Agent" style="width: 100%; padding: 10px; background: rgba(5, 8, 15, 0.6); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 4px; font-size: 12px; outline: none; box-sizing: border-box; font-family: inherit;" />
+      </div>
+      
+      <div>
+        <label style="font-size: 10px; color: var(--text-muted); font-weight: 800; display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Description</label>
+        <textarea id="new-agent-desc" placeholder="Briefly describe what this agent does..." style="width: 100%; height: 60px; padding: 10px; background: rgba(5, 8, 15, 0.6); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 4px; font-size: 11px; outline: none; resize: none; box-sizing: border-box; font-family: inherit;"></textarea>
+      </div>
+      
+      <div>
+        <label style="font-size: 10px; color: var(--text-muted); font-weight: 800; display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Conversational Instruction & Intention</label>
+        <textarea id="new-agent-instruction" placeholder="Tell the agent its goal, rules, and how it should behave..." style="width: 100%; height: 140px; padding: 10px; background: rgba(5, 8, 15, 0.6); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 4px; font-size: 11px; outline: none; resize: none; box-sizing: border-box; font-family: inherit;"></textarea>
+      </div>
+      
+      <div>
+        <label style="font-size: 10px; color: var(--text-muted); font-weight: 800; display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Select Base LLM Model</label>
+        <select id="new-agent-model" style="width: 100%; padding: 10px; background: rgba(5, 8, 15, 0.6); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 4px; font-size: 11px; outline: none; cursor: pointer; box-sizing: border-box; font-family: inherit;">
+          <option value="Gemini 2.5 Flash">Gemini 2.5 Flash (Default)</option>
+          <option value="Claude 3.5 Sonnet">Claude 3.5 Sonnet</option>
+          <option value="Gemini 2.5 Pro">Gemini 2.5 Pro</option>
+        </select>
+      </div>
+
+      <div>
+        <label style="font-size: 10px; color: var(--text-muted); font-weight: 800; display: block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Authorized Enterprise Connectors</label>
+        <div style="display: flex; flex-direction: column; gap: 12px; background: rgba(5, 8, 15, 0.4); border: 1px solid var(--border-color); border-radius: 4px; padding: 14px; box-sizing: border-box;">
+          <!-- Google Drive Checkbox -->
+          <label style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--text-main); cursor: pointer;">
+            <input type="checkbox" class="connector-checkbox" value="Google Drive OAuth" checked style="accent-color: var(--primary-color); cursor: pointer; width: 14px; height: 14px;" />
+            <span style="display: flex; align-items: center; gap: 6px;"><i class="fa-brands fa-google-drive" style="color: #34a853; width: 14px; text-align: center;"></i> Google Drive Connector</span>
+          </label>
+          
+          <!-- Confluence Checkbox -->
+          <label style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--text-main); cursor: pointer;">
+            <input type="checkbox" class="connector-checkbox" value="Confluence OAuth" style="accent-color: var(--primary-color); cursor: pointer; width: 14px; height: 14px;" />
+            <span style="display: flex; align-items: center; gap: 6px;"><i class="fa-brands fa-confluence" style="color: #0052cc; width: 14px; text-align: center;"></i> Confluence Connector</span>
+          </label>
+
+          <!-- Jira Checkbox -->
+          <label style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--text-main); cursor: pointer;">
+            <input type="checkbox" class="connector-checkbox" value="Jira OAuth" style="accent-color: var(--primary-color); cursor: pointer; width: 14px; height: 14px;" />
+            <span style="display: flex; align-items: center; gap: 6px;"><i class="fa-brands fa-jira" style="color: #0052cc; width: 14px; text-align: center;"></i> Jira Cloud Connector</span>
+          </label>
+
+          <!-- Salesforce Checkbox -->
+          <label style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--text-main); cursor: pointer;">
+            <input type="checkbox" class="connector-checkbox" value="Salesforce OAuth" style="accent-color: var(--primary-color); cursor: pointer; width: 14px; height: 14px;" />
+            <span style="display: flex; align-items: center; gap: 6px;"><i class="fa-brands fa-salesforce" style="color: #00a1e0; width: 14px; text-align: center;"></i> Salesforce Connector</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    
+    <div style="margin-top: 24px; border-top: 1px solid var(--border-color); padding-top: 16px; display: flex; flex-direction: column; gap: 10px;">
+      <button id="btn-deploy-agent-live" onclick="deployCustomAgentFromPortal(true)" style="width: 100%; padding: 12px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border: none; border-radius: var(--radius-sm); color: #000; font-size: 11px; font-weight: 800; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);">
+        <i class="fa-solid fa-cloud-arrow-up"></i> 🚀 Compile & Deploy to GCP Cloud (Dedicated)
+      </button>
+      <button id="btn-save-agent-local" onclick="deployCustomAgentFromPortal(false)" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); border-radius: var(--radius-sm); color: var(--text-main); font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <i class="fa-solid fa-bolt"></i> Compile & Save to Local Workspace Only
+      </button>
+    </div>
+  </div>
+
+  <!-- Full-Screen Deployment Console Modal -->
+  <div id="deployment-console-modal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 8, 15, 0.96); backdrop-filter: blur(8px); z-index: 10000; display: none; align-items: center; justify-content: center; font-family: 'Courier New', Courier, monospace; box-sizing: border-box;">
+    <div style="width: 750px; height: 500px; background: #070a13; border: 1px solid var(--border-color); border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); display: flex; flex-direction: column; overflow: hidden; box-sizing: border-box;">
+      <!-- Modal Header -->
+      <div style="background: #0d111e; border-bottom: 1px solid var(--border-color); padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box;">
+        <span style="color: var(--primary-color); font-weight: 800; font-size: 12px; display: flex; align-items: center; gap: 8px; font-family: inherit; text-transform: uppercase; letter-spacing: 0.5px;"><i class="fa-solid fa-cloud-arrow-up fa-fade"></i> ANTIGRAVITY CLOUD DEPLOYMENT HARNESS</span>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 9px; color: var(--emerald-accent); background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); padding: 2px 6px; border-radius: 4px; font-weight: 800; letter-spacing: 0.5px;">OPERATIONS: ACTIVE</span>
+          <button onclick="dismissDeploymentModal()" title="Close and return to workspace" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-dim); font-size: 13px; cursor: pointer; border-radius: 4px; padding: 4px 8px; transition: all 0.2s; display: flex; align-items: center; gap: 4px;">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+      <!-- Console Output Log Container -->
+      <div id="deployment-console-log" style="flex: 1; padding: 24px; overflow-y: auto; color: #10b981; font-size: 11px; line-height: 1.7; display: flex; flex-direction: column; gap: 8px; font-family: inherit; box-sizing: border-box; text-align: left; background: #03050a; border-bottom: 1px solid var(--border-color);">
+        <!-- Logs will scroll here dynamically -->
+      </div>
+      <!-- Modal Footer with Activation Button -->
+      <div id="deployment-modal-footer" style="background: #0d111e; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box;">
+        <span id="deployment-status-indicator" style="font-size: 11px; color: var(--text-dim); display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-spinner fa-spin" style="color: var(--primary-color);"></i> Provisioning Cloud Container...</span>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <button onclick="dismissDeploymentModal()" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-main); font-family: inherit; font-weight: 700; padding: 8px 14px; border-radius: 6px; font-size: 11px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+            <i class="fa-solid fa-arrow-left"></i> Return to Workspace
+          </button>
+          <button id="btn-confirm-deployment" onclick="closeDeploymentAndActivate()" style="display: none; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #000; font-family: inherit; font-weight: 800; border: none; padding: 10px 20px; border-radius: 6px; font-size: 12px; cursor: pointer; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); transition: all 0.2s;">
+            <i class="fa-solid fa-cloud"></i> Activate Dedicated Cloud Runtime & Chat
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

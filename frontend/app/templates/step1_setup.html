@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 1: Setup — Multi-Tenant Cloud Identities (Project: learn-w-me)</title>
+    
+    <!-- Modern Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-main: #0b0f19;
+            --bg-card: #131b2e;
+            --bg-hover: #1a243d;
+            --primary-color: #3b82f6;
+            --primary-hover: #2563eb;
+            --primary-light: rgba(59, 130, 246, 0.15);
+            --emerald-accent: #10b981;
+            --emerald-light: rgba(16, 185, 129, 0.15);
+            --amber-accent: #f59e0b;
+            --amber-light: rgba(245, 158, 11, 0.15);
+            --indigo-accent: #6366f1;
+            --border-color: #222f4e;
+            --border-light: #2c3c62;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+            --radius-lg: 16px;
+            --radius-md: 10px;
+            --radius-sm: 6px;
+            --radius-full: 9999px;
+            --shadow-lg: 0 10px 30px -5px rgba(0, 0, 0, 0.6);
+            --transition-fast: 0.15s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        /* Top Global Header */
+        .global-header {
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, var(--primary-color), var(--indigo-accent));
+            color: #fff;
+            width: 34px;
+            height: 34px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        }
+
+        .logo-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+            color: var(--text-main);
+        }
+
+        .logo-highlight {
+            color: var(--primary-color);
+        }
+
+        .portal-badge {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: var(--emerald-accent);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: var(--radius-full);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: var(--radius-full);
+            transition: all var(--transition-fast);
+        }
+
+        .nav-btn:hover {
+            color: var(--text-main);
+            border-color: var(--primary-color);
+            background-color: var(--bg-hover);
+        }
+
+        .nav-btn.active {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+            font-weight: 700;
+        }
+
+        /* Master Project Banner */
+        .project-context-banner {
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.1), rgba(99, 102, 241, 0.05)), var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .project-info-groups {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .p-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .p-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .p-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+            background-color: var(--bg-main);
+            padding: 4px 12px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        .p-value.highlight {
+            color: var(--primary-color);
+            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Main Content Container */
+        .content-container {
+            flex: 1;
+            padding: 36px 32px;
+            max-width: 1500px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 36px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+
+        .section-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-subtitle {
+            font-size: 15px;
+            color: var(--text-muted);
+            margin-top: 6px;
+            max-width: 900px;
+        }
+
+        /* Identity Provisioning Cards */
+        .tenants-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+        }
+
+        .tenant-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            transition: all var(--transition-fast);
+        }
+
+        .tenant-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px -5px rgba(59, 130, 246, 0.2);
+        }
+
+        .tenant-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--card-accent);
+        }
+
+        .t-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .t-name-group {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .t-avatar {
+            width: 46px;
+            height: 46px;
+            border-radius: var(--radius-md);
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: var(--primary-color);
+        }
+
+        .t-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .t-role {
+            font-size: 13px;
+            color: var(--emerald-accent);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 2px;
+        }
+
+        .t-iam-principal-box {
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 18px 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .iam-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+        }
+
+        .iam-label {
+            font-weight: 600;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .iam-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary-color);
+            background-color: var(--bg-card);
+            padding: 4px 10px;
+            border-radius: 4px;
+            border: 1px solid var(--border-light);
+        }
+
+        .iam-code.spiffy {
+            color: var(--emerald-accent);
+        }
+
+        .policy-pills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .tag-pill {
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-light);
+            color: var(--text-main);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tag-pill i {
+            color: var(--primary-color);
+        }
+
+        /* Security Verification Architecture Box */
+        .security-evaluation-box {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.05)), var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-left: 5px solid var(--indigo-accent);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .eval-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .eval-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .eval-badge {
+            background-color: rgba(99, 102, 241, 0.15);
+            color: var(--indigo-accent);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: var(--radius-full);
+            text-transform: uppercase;
+        }
+
+        .secret-toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            padding: 16px 24px;
+            border-radius: var(--radius-md);
+        }
+
+        .secret-key-label {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .secret-value-group {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .secret-input {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--amber-accent);
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-light);
+            padding: 6px 14px;
+            border-radius: var(--radius-sm);
+            width: 280px;
+            text-align: center;
+            letter-spacing: 1px;
+            outline: none;
+        }
+
+        .btn-toggle-secret {
+            background-color: var(--primary-color);
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-toggle-secret:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Interactive Simulation Testing Dialogue */
+        .simulation-sandbox {
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sandbox-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 14px;
+        }
+
+        .sandbox-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .interactive-form {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .form-select {
+            background-color: var(--bg-card);
+            border: 1px solid var(--primary-color);
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 0 14px;
+            height: 38px;
+            border-radius: var(--radius-sm);
+            outline: none;
+            cursor: pointer;
+            width: 320px;
+        }
+
+        .btn-run-simulation {
+            background: linear-gradient(135deg, var(--emerald-accent), #059669);
+            color: #fff;
+            border: none;
+            height: 38px;
+            padding: 0 24px;
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            transition: all var(--transition-fast);
+        }
+
+        .btn-run-simulation:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .output-console {
+            background-color: #050810;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            padding: 16px 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--emerald-accent);
+            display: none;
+            white-space: pre-wrap;
+        /* Demo Dropdown Styling */
+        .demo-dropdown-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .demo-dropdown-wrapper:hover .demo-menu-content {
+            display: flex;
+            flex-direction: column;
+            animation: fadeInDown 0.15s ease forwards;
+        }
+
+        .demo-menu-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            margin-top: 8px;
+            background-color: var(--bg-card);
+            min-width: 270px;
+            border: 1px solid var(--primary-color);
+            border-radius: var(--radius-md);
+            box-shadow: 0 10px 35px rgba(0,0,0,0.8), 0 0 20px rgba(59, 130, 246, 0.2);
+            z-index: 999;
+            overflow: hidden;
+            padding: 6px 0;
+            text-align: left;
+        }
+
+        .demo-menu-content a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 18px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all var(--transition-fast);
+        }
+
+        .demo-menu-content a:hover {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            padding-left: 22px;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Global Header -->
+    <header class="global-header">
+        <div class="logo-container">
+            <div class="logo-icon"><i class="fa-solid fa-cube"></i></div>
+            <span class="logo-text">Acme <span class="logo-highlight">AI Platform</span></span>
+            <span class="portal-badge">Multi-Tenant Setup Studio</span>
+        </div>
+
+        <div class="header-right" style="display: flex; align-items: center; gap: 12px;">
+            <a href="/admin" class="nav-btn"><i class="fa-solid fa-robot"></i> Admin View</a>
+            <a href="/admin/catalog" class="nav-btn"><i class="fa-solid fa-sitemap"></i> Client Portal</a>
+            
+            <!-- Demo Steps Dropdown -->
+            <div class="demo-dropdown-wrapper">
+                <div style="display: flex; align-items: center; gap: 6px; background: linear-gradient(135deg, var(--primary-color), var(--indigo-accent)); color: #fff; font-size: 13px; font-weight: 700; padding: 8px 16px; border-radius: var(--radius-full); cursor: pointer; box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3);">
+                    <i class="fa-solid fa-play"></i> Validation Demo <i class="fa-solid fa-chevron-down" style="font-size: 10px; margin-left: 4px;"></i>
+                </div>
+                <div class="demo-menu-content">
+                    <div style="padding: 8px 18px; font-size: 11px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; border-bottom: 1px solid var(--border-color); letter-spacing: 0.5px; margin-bottom: 4px;">Acme Execution Scenarios</div>
+                    <a href="/admin/step1" style="background-color: var(--primary-light); color: var(--primary-color); padding-left: 22px;"><i class="fa-solid fa-sliders" style="color: var(--primary-color); width: 18px;"></i> Step 1: Provisioning Setup</a>
+                    <a href="/admin/step2"><i class="fa-solid fa-globe" style="color: var(--primary-color); width: 18px;"></i> Step 2: Shared Agent Deploy</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Master Project Banner -->
+    <section class="project-context-banner">
+        <div class="project-info-groups">
+            <div class="p-group">
+                <i class="fa-solid fa-cloud" style="color: var(--primary-color); font-size: 18px;"></i>
+                <span class="p-label">Google Cloud Project:</span>
+                <span class="p-value highlight">learn-w-me</span>
+            </div>
+            <div class="p-group">
+                <i class="fa-solid fa-user-tie" style="color: var(--emerald-accent); font-size: 18px;"></i>
+                <span class="p-label">Platform Operator Identity:</span>
+                <span class="p-value">admin@ntuteja.altostrat.com</span>
+            </div>
+        </div>
+
+        <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;"><i class="fa-solid fa-circle-check" style="color: var(--emerald-accent); margin-right: 6px;"></i> Architecture Scoping Plane Validated</span>
+    </section>
+
+    <!-- Main Content Container -->
+    <main class="content-container">
+        
+        <!-- Section Header -->
+        <div class="section-header">
+            <div>
+                <h1 class="section-title">Step 1: Multi-Tenant Identity Setup</h1>
+                <p class="section-subtitle">Provisioning exactly two isolated enterprise tenant identities (Customer A and Customer B) within a single GCP resource boundary (<strong style="color: var(--text-main);">learn-w-me</strong>). Below are the dedicated Workload Service Accounts and conditional IAM policies scoping each customer.</p>
+            </div>
+            <button class="nav-btn" style="color: var(--primary-color); border-color: var(--primary-color);" onclick="alert('Exporting GCP IAM multi-tenant Terraform provisioning blueprint for learn-w-me.')">
+                <i class="fa-solid fa-download"></i> Export Terraform Blueprint
+            </button>
+        </div>
+
+        <!-- Identity Provisioning Cards -->
+        <div class="tenants-grid">
+            
+            <!-- Customer A Card -->
+            <div class="tenant-card" style="--card-accent: linear-gradient(90deg, var(--primary-color), var(--emerald-accent));">
+                <div>
+                    <div class="t-card-header">
+                        <div class="t-name-group">
+                            <div class="t-avatar"><i class="fa-solid fa-building-columns"></i></div>
+                            <div>
+                                <h3 class="t-title">Customer A</h3>
+                                <span class="t-role"><i class="fa-solid fa-circle-check"></i> Primary Scoped Workload Identity</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p style="color: var(--text-muted); font-size: 14px; margin: 20px 0;">
+                        Dedicated execution boundary provisioned inside <strong style="color: #fff;">learn-w-me</strong> for Customer A's private contract workflows and case management integrations.
+                    </p>
+
+                    <div class="t-iam-principal-box">
+                        <div class="iam-row">
+                            <span class="iam-label"><i class="fa-solid fa-user-shield" style="color: var(--primary-color);"></i> GCP Service Account:</span>
+                            <span class="iam-code">sa-customer-a@learn-w-me.iam.gserviceaccount.com</span>
+                        </div>
+                        <div class="iam-row" style="margin-top: 10px;">
+                            <span class="iam-label"><i class="fa-solid fa-fingerprint" style="color: var(--emerald-accent);"></i> SPIFFE Cryptographic Binding:</span>
+                            <span class="iam-code spiffy">spiffe://acme.com/tenant/customer-a</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 22px;">
+                        <span style="font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 8px;">Attached IAM Scoping Entitlements:</span>
+                        <div class="policy-pills-list">
+                            <span class="tag-pill"><i class="fa-solid fa-check"></i> roles/aiplatform.user</span>
+                            <span class="tag-pill"><i class="fa-solid fa-check"></i> roles/storage.objectAdmin</span>
+                            <span class="tag-pill"><i class="fa-solid fa-filter" style="color: var(--amber-accent);"></i> GCS Bucket Scope: gs://learn-w-me-tenant-a</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="border-top: 1px solid var(--border-color); padding-top: 16px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-muted);">
+                    <span><i class="fa-solid fa-shield-halved" style="color: var(--emerald-accent);"></i> Impersonation Gateway Active</span>
+                    <span style="font-family: monospace; color: var(--text-dim);">iam.workloadIdentityUser</span>
+                </div>
+            </div>
+
+            <!-- Customer B Card -->
+            <div class="tenant-card" style="--card-accent: linear-gradient(90deg, var(--indigo-accent), var(--amber-accent));">
+                <div>
+                    <div class="t-card-header">
+                        <div class="t-name-group">
+                            <div class="t-avatar" style="color: var(--indigo-accent);"><i class="fa-solid fa-microchip"></i></div>
+                            <div>
+                                <h3 class="t-title">Customer B</h3>
+                                <span class="t-role" style="color: var(--indigo-accent);"><i class="fa-solid fa-circle-check"></i> Secondary Scoped Workload Identity</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p style="color: var(--text-muted); font-size: 14px; margin: 20px 0;">
+                        Dedicated execution boundary provisioned inside <strong style="color: #fff;">learn-w-me</strong> for Customer B's vendor compliance and procurement playbook analysis.
+                    </p>
+
+                    <div class="t-iam-principal-box">
+                        <div class="iam-row">
+                            <span class="iam-label"><i class="fa-solid fa-user-shield" style="color: var(--indigo-accent);"></i> GCP Service Account:</span>
+                            <span class="iam-code" style="color: var(--indigo-accent);">sa-customer-b@learn-w-me.iam.gserviceaccount.com</span>
+                        </div>
+                        <div class="iam-row" style="margin-top: 10px;">
+                            <span class="iam-label"><i class="fa-solid fa-fingerprint" style="color: var(--emerald-accent);"></i> SPIFFE Cryptographic Binding:</span>
+                            <span class="iam-code spiffy">spiffe://acme.com/tenant/customer-b</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 22px;">
+                        <span style="font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 8px;">Attached IAM Scoping Entitlements:</span>
+                        <div class="policy-pills-list">
+                            <span class="tag-pill"><i class="fa-solid fa-check"></i> roles/aiplatform.user</span>
+                            <span class="tag-pill"><i class="fa-solid fa-check"></i> roles/storage.objectAdmin</span>
+                            <span class="tag-pill"><i class="fa-solid fa-filter" style="color: var(--amber-accent);"></i> GCS Bucket Scope: gs://learn-w-me-tenant-b</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="border-top: 1px solid var(--border-color); padding-top: 16px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-muted);">
+                    <span><i class="fa-solid fa-shield-halved" style="color: var(--emerald-accent);"></i> Impersonation Gateway Active</span>
+                    <span style="font-family: monospace; color: var(--text-dim);">iam.workloadIdentityUser</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Security Verification Architecture Box (Displaying Target Secret @Satyam123) -->
+        <div class="security-evaluation-box">
+            <div class="eval-header">
+                <h2 class="eval-title"><i class="fa-solid fa-key" style="color: var(--amber-accent);"></i> Platform Operator FinOps & WIF Gateway Token</h2>
+                <span class="eval-badge">Core Authentication Secret</span>
+            </div>
+
+            <p style="font-size: 14px; color: var(--text-muted); line-height: 1.6;">
+                To securely orchestrate identity impersonation and FinOps monitoring on behalf of <strong style="color: #fff;">admin@ntuteja.altostrat.com</strong>, the platform injects a dedicated cryptographic token into the underlying Cloud Identity WIF authorizer pool.
+            </p>
+
+            <div class="secret-toggle-row">
+                <span class="secret-key-label"><i class="fa-solid fa-lock" style="color: var(--primary-color);"></i> Cryptographic Authorization Gateway Secret:</span>
+                <div class="secret-value-group">
+                    <input type="password" id="wif-secret-input" class="secret-input" value="@Satyam123" readonly>
+                    <button class="btn-toggle-secret" id="btn-toggle" onclick="toggleSecret()">
+                        <i class="fa-solid fa-eye"></i> Show Token
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Interactive IAM Authorizer Sandbox -->
+        <div class="simulation-sandbox">
+            <div class="sandbox-top">
+                <span class="sandbox-title"><i class="fa-solid fa-terminal"></i> Live Python Multi-Tenant IAM Authorizer Simulation</span>
+                <span style="font-size: 12px; color: var(--text-muted);">Demonstrates runtime Spiffy Impersonation in learn-w-me</span>
+            </div>
+
+            <div class="interactive-form">
+                <span style="font-size: 13px; font-weight: 700; color: var(--text-main);">Simulate Runtime Request From:</span>
+                <select id="sim-tenant-select" class="form-select">
+                    <option value="Customer A">Customer A (Impersonates sa-customer-a)</option>
+                    <option value="Customer B">Customer B (Impersonates sa-customer-b)</option>
+                </select>
+
+                <button class="btn-run-simulation" onclick="runIamSimulation()">
+                    <i class="fa-solid fa-play"></i> Authorize Tenant Impersonation
+                </button>
+            </div>
+
+            <!-- Console Output Area -->
+            <div id="sim-console-output" class="output-console"></div>
+        </div>
+
+    </main>
+
+    <script>
+        /**
+         * Toggle WIF Gateway Secret Key Visibility
+         */
+        function toggleSecret() {
+            const input = document.getElementById("wif-secret-input");
+            const btn = document.getElementById("btn-toggle");
+
+            if (input.type === "password") {
+                input.type = "text";
+                btn.innerHTML = `<i class="fa-solid fa-eye-slash"></i> Hide Token`;
+                btn.style.backgroundColor = "var(--border-light)";
+            } else {
+                input.type = "password";
+                btn.innerHTML = `<i class="fa-solid fa-eye"></i> Show Token`;
+                btn.style.backgroundColor = "var(--primary-color)";
+            }
+        }
+
+        /**
+         * Live IAM Impersonation Authorizer Simulation
+         */
+        function runIamSimulation() {
+            const tenant = document.getElementById("sim-tenant-select").value;
+            const consoleBox = document.getElementById("sim-console-output");
+
+            const saEmail = tenant === "Customer A" 
+                ? "sa-customer-a@learn-w-me.iam.gserviceaccount.com" 
+                : "sa-customer-b@learn-w-me.iam.gserviceaccount.com";
+
+            const spiffe = tenant === "Customer A"
+                ? "spiffe://acme.com/tenant/customer-a"
+                : "spiffe://acme.com/tenant/customer-b";
+
+            const bucket = tenant === "Customer A"
+                ? "gs://learn-w-me-tenant-a"
+                : "gs://learn-w-me-tenant-b";
+
+            const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+            consoleBox.style.display = "block";
+            consoleBox.innerHTML = `
+<span style="color: var(--primary-color);">[${timestamp}] INFO:</span> ⚡ Intercepting incoming AI Copilot query from entity: <strong>"${tenant}"</strong>
+<span style="color: var(--primary-color);">[${timestamp}] INFO:</span> ✔ Validating Gateway Execution Token (Authority: admin@ntuteja.altostrat.com)...
+<span style="color: var(--primary-color);">[${timestamp}] INFO:</span> ✔ Cryptographic JWT caller claim resolved successfully: <span style="color: var(--amber-accent);">${spiffe}</span>
+<span style="color: var(--primary-color);">[${timestamp}] INFO:</span> 🔒 Applying Workload Identity Federation Impersonation Binding...
+<span style="color: var(--emerald-accent);">[${timestamp}] SUCCESS:</span> Runtime execution thread securely bound to GCP Service Account:
+          <strong>➔ ${saEmail}</strong>
+
+<span style="color: #60a5fa;">Downstream Partition Summary:</span>
+  - Runtime Project ID:   learn-w-me
+  - Vertex AI Model Scope: roles/aiplatform.user (Fully Enforced)
+  - Storage Data Plane:   ${bucket} (100% Partitioned)
+
+<span style="color: #10b981;">✔ Zero-Trust Multi-Tenancy Scoping successfully verified for ${tenant}!</span>`;
+        }
+    </script>
+</body>
+</html>

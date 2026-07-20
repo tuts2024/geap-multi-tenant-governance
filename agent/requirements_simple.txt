@@ -1,0 +1,11 @@
+google-cloud-aiplatform[agent_engines,adk]>=1.112.0
+google-api-python-client
+google-auth
+httpx
+google-adk[agent-identity]
+google-cloud-bigquery
+mcp==1.28.1
+a2a-sdk==0.3.26
+pydantic
+cloudpickle
+python-dotenv

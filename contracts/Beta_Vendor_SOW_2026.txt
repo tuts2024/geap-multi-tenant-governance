@@ -1,0 +1,11 @@
+STATEMENT OF WORK: Beta_Vendor_SOW_2026
+This Statement of Work is entered into as of March 1, 2026, by and between Beta Corporation ("Beta") and TechSolutions Inc. ("Vendor").
+
+1. SCOPE OF SERVICES
+Vendor shall provide cloud migration, database architecture optimization, and infrastructure support services.
+
+2. INTELLECTUAL PROPERTY
+Deliverables created under this SOW will be jointly owned by Beta Corporation and TechSolutions Inc. Both parties will have a perpetual, royalty-free, worldwide license to use, modify, and distribute the deliverables.
+
+3. INDEMNIFICATION AND LIABILITY
+The governing venue for any legal dispute shall be the state courts of New York. Vendor's total liability under this SOW shall not exceed $10,000,000.

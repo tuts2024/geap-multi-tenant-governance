@@ -1,7 +1,0 @@
-fastapi
-uvicorn[standard]
-jinja2
-firebase-admin
-google-cloud-aiplatform[agent_engines,adk]>=1.112.0
-pydantic
-python-multipart

@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 2: Deploy Shared Agent — Contract Analyst Agent</title>
+    
+    <!-- Modern Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-main: #0b0f19;
+            --bg-card: #131b2e;
+            --bg-hover: #1a243d;
+            --primary-color: #3b82f6;
+            --primary-hover: #2563eb;
+            --primary-light: rgba(59, 130, 246, 0.15);
+            --emerald-accent: #10b981;
+            --emerald-light: rgba(16, 185, 129, 0.15);
+            --amber-accent: #f59e0b;
+            --amber-light: rgba(245, 158, 11, 0.15);
+            --indigo-accent: #6366f1;
+            --indigo-light: rgba(99, 102, 241, 0.15);
+            --cyan-accent: #06b6d4;
+            --rose-accent: #f43f5e;
+            --border-color: #222f4e;
+            --border-light: #2c3c62;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+            --radius-lg: 16px;
+            --radius-md: 10px;
+            --radius-sm: 6px;
+            --radius-full: 9999px;
+            --shadow-lg: 0 10px 30px -5px rgba(0, 0, 0, 0.6);
+            --transition-fast: 0.15s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        /* Top Global Header */
+        .global-header {
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, var(--primary-color), var(--indigo-accent));
+            color: #fff;
+            width: 34px;
+            height: 34px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        }
+
+        .logo-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+            color: var(--text-main);
+        }
+
+        .logo-highlight {
+            color: var(--primary-color);
+        }
+
+        .portal-badge {
+            background-color: var(--indigo-light);
+            color: var(--indigo-accent);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: var(--radius-full);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: var(--radius-full);
+            transition: all var(--transition-fast);
+        }
+
+        .nav-btn:hover {
+            color: var(--text-main);
+            border-color: var(--primary-color);
+            background-color: var(--bg-hover);
+        }
+
+        /* Demo Dropdown Styling */
+        .demo-dropdown-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .demo-dropdown-wrapper:hover .demo-menu-content {
+            display: flex;
+            flex-direction: column;
+            animation: fadeInDown 0.15s ease forwards;
+        }
+
+        .demo-menu-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            margin-top: 8px;
+            background-color: var(--bg-card);
+            min-width: 270px;
+            border: 1px solid var(--primary-color);
+            border-radius: var(--radius-md);
+            box-shadow: 0 10px 35px rgba(0,0,0,0.8), 0 0 20px rgba(59, 130, 246, 0.2);
+            z-index: 999;
+            overflow: hidden;
+            padding: 6px 0;
+            text-align: left;
+        }
+
+        .demo-menu-content a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 18px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all var(--transition-fast);
+        }
+
+        .demo-menu-content a:hover {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            padding-left: 22px;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Master Reasoning Engine Banner */
+        .reasoning-engine-banner {
+            background: linear-gradient(90deg, rgba(6, 182, 212, 0.1), rgba(59, 130, 246, 0.05)), var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .urn-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .urn-label-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .urn-badge {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            font-size: 12px;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .urn-code-box {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--cyan-accent);
+            background-color: #050810;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-copy {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        .btn-copy:hover { color: var(--text-main); transform: scale(1.1); }
+
+        /* Main Content Container */
+        .content-container {
+            flex: 1;
+            padding: 36px 32px;
+            max-width: 1600px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 36px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+
+        .section-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-subtitle {
+            font-size: 15px;
+            color: var(--text-muted);
+            margin-top: 6px;
+            max-width: 1000px;
+        }
+
+        /* Architecture Specifications Showcase */
+        .arch-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.8fr;
+            gap: 28px;
+        }
+
+        .agent-spec-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .spec-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .spec-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            letter-spacing: 0.5px;
+        }
+
+        .spec-value {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .pills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .tag-pill {
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-light);
+            color: var(--emerald-accent);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .tag-pill.tool { color: var(--amber-accent); }
+
+        /* Multi-Tenant Interactive Invocation Showdown */
+        .invocation-showdown {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .showdown-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+        }
+
+        .showdown-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tenants-invokers-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .tenant-invoker-panel {
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: relative;
+        }
+
+        .tenant-invoker-panel.cust-a {
+            border-top: 4px solid var(--emerald-accent);
+        }
+
+        .tenant-invoker-panel.cust-b {
+            border-top: 4px solid var(--indigo-accent);
+        }
+
+        .t-invoker-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .t-invoker-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .spiffy-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            background-color: var(--bg-card);
+            padding: 4px 10px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+        .cust-a .spiffy-tag { color: var(--emerald-accent); }
+        .cust-b .spiffy-tag { color: var(--amber-accent); }
+
+        .invoker-form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .invoker-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .invoker-input {
+            height: 40px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 0 14px;
+            font-family: inherit;
+            font-size: 13px;
+            color: var(--text-main);
+            width: 100%;
+            outline: none;
+        }
+        .invoker-input:focus { border-color: var(--primary-color); }
+
+        .btn-invoke {
+            height: 42px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            transition: all var(--transition-fast);
+        }
+        .cust-a .btn-invoke { background: linear-gradient(135deg, var(--emerald-accent), #059669); }
+        .cust-b .btn-invoke { background: linear-gradient(135deg, var(--indigo-accent), #4f46e5); }
+        .btn-invoke:hover { transform: translateY(-1px); filter: brightness(1.1); }
+
+        .output-box {
+            background-color: #050810;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            line-height: 1.6;
+            color: var(--text-main);
+            display: none;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+        .output-box .key { color: var(--primary-color); }
+        .output-box .str { color: var(--emerald-accent); }
+        .output-box .num { color: var(--amber-accent); }
+    </style>
+</head>
+<body>
+
+    <!-- Top Global Header -->
+    <header class="global-header">
+        <div class="logo-container">
+            <div class="logo-icon"><i class="fa-solid fa-cube"></i></div>
+            <span class="logo-text">Acme <span class="logo-highlight">AI Platform</span></span>
+            <span class="portal-badge">Operator Shared Deployment Studio</span>
+        </div>
+
+        <div class="header-right">
+            <a href="index.html" class="nav-btn"><i class="fa-solid fa-robot"></i> Admin View</a>
+            <a href="client_catalog.html" class="nav-btn"><i class="fa-solid fa-sitemap"></i> Client Portal</a>
+            
+            <!-- Demo Steps Dropdown -->
+            <div class="demo-dropdown-wrapper">
+                <div style="display: flex; align-items: center; gap: 6px; background: linear-gradient(135deg, var(--primary-color), var(--indigo-accent)); color: #fff; font-size: 13px; font-weight: 700; padding: 8px 16px; border-radius: var(--radius-full); cursor: pointer; box-shadow: 0 2px 10px rgba(59, 130, 246, 0.4);">
+                    <i class="fa-solid fa-play"></i> Validation Demo <i class="fa-solid fa-chevron-down" style="font-size: 10px; margin-left: 4px;"></i>
+                </div>
+                <div class="demo-menu-content">
+                    <div style="padding: 8px 18px; font-size: 11px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; border-bottom: 1px solid var(--border-color); letter-spacing: 0.5px; margin-bottom: 4px;">Acme Execution Scenarios</div>
+                    <a href="step1_setup.html"><i class="fa-solid fa-sliders" style="color: var(--primary-color); width: 18px;"></i> Step 1: Provisioning Setup</a>
+                    <a href="step2_shared_agent.html" style="background-color: var(--primary-light); color: var(--primary-color); padding-left: 22px;"><i class="fa-solid fa-globe" style="color: var(--primary-color); width: 18px;"></i> Step 2: Shared Agent Deploy</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Master Reasoning Engine URN Banner -->
+    <section class="reasoning-engine-banner">
+        <div class="urn-row">
+            <div class="urn-label-group">
+                <span class="urn-badge"><i class="fa-solid fa-globe"></i> Enterprise Shared Engine</span>
+                <h2 style="font-size: 20px; font-family: 'Outfit', sans-serif; font-weight: 800; color: #fff;">Contract Analyst Agent</h2>
+            </div>
+            <span style="font-size: 12px; color: var(--emerald-accent); font-weight: 700;">
+                <i class="fa-solid fa-circle-check" style="margin-right: 6px;"></i> Successfully Instantiated on GCP Vertex AI Reasoning Engines
+            </span>
+        </div>
+
+        <div class="urn-code-box">
+            <i class="fa-solid fa-microchip" style="color: var(--text-dim);"></i>
+            <span id="urn-text" style="flex: 1; letter-spacing: 0.5px; font-size: 13px;">urn:agent:projects-404109417257:projects:404109417257:locations:us-central1:aiplatform:reasoningEngines:3321719735267098624</span>
+            <button class="btn-copy" onclick="copyUrn()" title="Copy URN to Clipboard">
+                <i class="fa-solid fa-copy" style="font-size: 16px;"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- Main Content Container -->
+    <main class="content-container">
+        
+        <!-- Section Header -->
+        <div class="section-header">
+            <div>
+                <h1 class="section-title">Step 2: Shared Agent Verification</h1>
+                <p class="section-subtitle">Deploying the pre-configured <strong style="color: var(--text-main);">Contract Analyst Agent</strong> once at the Acme Operator level and verifying that multiple enterprise customers (<strong style="color: var(--emerald-accent);">Customer A</strong> and <strong style="color: var(--indigo-accent);">Customer B</strong>) can see and invoke the exact same URN seamlessly, while maintaining 100% data and connector isolation.</p>
+            </div>
+            <button class="nav-btn" style="color: var(--cyan-accent); border-color: var(--cyan-accent);" onclick="alert('Viewing live multi-tenant Vertex AI Agent invocation logs.')">
+                <i class="fa-solid fa-chart-line"></i> View Platform Audit Trail
+            </button>
+        </div>
+
+        <!-- Architecture Specifications Showcase -->
+        <div class="arch-grid">
+            
+            <!-- Left Spec Summary -->
+            <div class="agent-spec-card">
+                <div style="display: flex; align-items: center; gap: 14px; border-bottom: 1px solid var(--border-color); padding-bottom: 16px;">
+                    <div style="width: 48px; height: 48px; border-radius: var(--radius-md); background: linear-gradient(135deg, var(--primary-color), var(--cyan-accent)); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div>
+                        <h3 style="font-size: 19px; font-weight: 800; color: var(--text-main);">Operator Manifest</h3>
+                        <span style="font-size: 12px; color: var(--text-muted);">Multi-Tenant Template Foundation</span>
+                    </div>
+                </div>
+
+                <div class="spec-item">
+                    <span class="spec-label">Tenancy Model</span>
+                    <span class="spec-value" style="color: var(--primary-color);">Operator-Owned (Universal Public)</span>
+                </div>
+
+                <div class="spec-item">
+                    <span class="spec-label">Core Runtime Engine</span>
+                    <span class="spec-value">Gemini 3.0 Enterprise (Thinking Active)</span>
+                </div>
+
+                <div class="spec-item">
+                    <span class="spec-label">Universal Tool Connectors</span>
+                    <div class="pills-list">
+                        <span class="tag-pill tool"><i class="fa-solid fa-cloud"></i> Acme Core Drive</span>
+                        <span class="tag-pill tool"><i class="fa-solid fa-hard-drive"></i> Google Drive OAuth</span>
+                        <span class="tag-pill tool"><i class="fa-solid fa-database"></i> Microsoft OneDrive</span>
+                    </div>
+                </div>
+
+                <div class="spec-item">
+                    <span class="spec-label">Core Skills Loaded</span>
+                    <div class="pills-list">
+                        <span class="tag-pill"><i class="fa-solid fa-check"></i> Clause Extraction</span>
+                        <span class="tag-pill"><i class="fa-solid fa-check"></i> Risk Flagging</span>
+                        <span class="tag-pill"><i class="fa-solid fa-check"></i> Playbook Comparison</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Multi-Tenant Interactive Invocation Showdown -->
+            <div class="invocation-showdown">
+                <div class="showdown-header">
+                    <h2 class="showdown-title"><i class="fa-solid fa-network-wired" style="color: var(--primary-color);"></i> Live Cross-Tenant Invocation Verification</h2>
+                    <span style="font-size: 13px; color: var(--text-muted);">Executing API direct calls to active agent URN</span>
+                </div>
+
+                <div class="tenants-invokers-grid">
+                    
+                    <!-- Customer A Panel -->
+                    <div class="tenant-invoker-panel cust-a">
+                        <div class="t-invoker-header">
+                            <h3 class="t-invoker-name"><i class="fa-solid fa-building-columns" style="color: var(--emerald-accent);"></i> Customer A</h3>
+                            <span class="spiffy-tag">spiffe://acme.com/tenant/acme-legal</span>
+                        </div>
+
+                        <div class="invoker-form-group">
+                            <label class="invoker-label">Target Contract Payload:</label>
+                            <input type="text" id="doc-a" class="invoker-input" value="Acme Drive ➔ AcmeLegal/Contracts/Agreement_104.pdf">
+                        </div>
+
+                        <div class="invoker-form-group">
+                            <label class="invoker-label">Inference Query:</label>
+                            <input type="text" id="query-a" class="invoker-input" value="Extract all termination penalty clauses and liability caps.">
+                        </div>
+
+                        <button class="btn-invoke" onclick="invokeTenantA()">
+                            <i class="fa-solid fa-play"></i> Send Query (Context: Customer A)
+                        </button>
+
+                        <div id="out-a" class="output-box"></div>
+                    </div>
+
+                    <!-- Customer B Panel -->
+                    <div class="tenant-invoker-panel cust-b">
+                        <div class="t-invoker-header">
+                            <h3 class="t-invoker-name"><i class="fa-solid fa-microchip" style="color: var(--indigo-accent);"></i> Customer B</h3>
+                            <span class="spiffy-tag">spiffe://acme.com/tenant/beta-corp</span>
+                        </div>
+
+                        <div class="invoker-form-group">
+                            <label class="invoker-label">Target Contract Payload:</label>
+                            <input type="text" id="doc-b" class="invoker-input" value="Acme Drive ➔ BetaCorp/Legal/MSA_Agreement_891.pdf">
+                        </div>
+
+                        <div class="invoker-form-group">
+                            <label class="invoker-label">Inference Query:</label>
+                            <input type="text" id="query-b" class="invoker-input" value="Verify indemnification clauses against target procurement playbook.">
+                        </div>
+
+                        <button class="btn-invoke" onclick="invokeTenantB()">
+                            <i class="fa-solid fa-play"></i> Send Query (Context: Customer B)
+                        </button>
+
+                        <div id="out-b" class="output-box"></div>
+                    </div>
+
+                </div>
+
+                <!-- Architectural Isolation Note -->
+                <div style="background-color: var(--bg-main); padding: 18px 24px; border-radius: var(--radius-sm); border-left: 4px solid var(--amber-accent); display: flex; align-items: center; gap: 16px; font-size: 13px; color: var(--text-muted); line-height: 1.5;">
+                    <i class="fa-solid fa-shield-cat" style="font-size: 24px; color: var(--amber-accent);"></i>
+                    <div>
+                        <strong style="color: var(--text-main);">Verified Zero Data & Connector Leakage:</strong> When Customer A and Customer B execute queries against the shared Operator Agent URN, the underlying Vertex AI Reasoning Engine dynamically resolves each caller's Spiffy identity. Customer A can only query Acme Legal's data plane GCS buckets, while Customer B executes securely in its isolated Microsoft 365 partition.
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+        /**
+         * Copy URN helper
+         */
+        function copyUrn() {
+            const urn = document.getElementById("urn-text").textContent;
+            navigator.clipboard.writeText(urn);
+            alert("✔ Successfully copied Contract Analyst Agent URN to clipboard:\n\n" + urn);
+        }
+
+        /**
+         * Invoke Customer A (Live REST API Gateway Proxy)
+         */
+        async function invokeTenantA() {
+            const out = document.getElementById("out-a");
+            const doc = document.getElementById("doc-a").value;
+            const query = document.getElementById("query-a").value;
+            const btn = document.querySelector(".cust-a .btn-invoke");
+
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Authorizing WIF & Executing Query...`;
+            out.style.display = "block";
+            out.innerHTML = `<span style="color: var(--amber-accent);">[INFO] Intercepting Spiffy ID (spiffe://acme.com/tenant/acme-legal)...</span>\n<span style="color: var(--amber-accent);">[INFO] Impersonating active GCP SA (sa-customer-a@learn-w-me)...</span>\n<span style="color: var(--cyan-accent);">[INFO] Contacting Google Vertex AI Reasoning Engine URN (3321719735267098624)...</span>`;
+
+            try {
+                const res = await fetch("http://localhost:8082/api/v1/reasoning_engine/invoke", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        tenant: "Customer A",
+                        query: query,
+                        document: doc,
+                        target_urn: "urn:agent:projects-404109417257:projects:404109417257:locations:us-central1:aiplatform:reasoningEngines:3321719735267098624"
+                    })
+                });
+                
+                const data = await res.json();
+                
+                if (data.status === "SUCCESS") {
+                    out.innerHTML = `
+<span style="color: var(--emerald-accent);">[${data.timestamp}] HTTP ${data.http_code} OK (Live Gateway API Verified)</span>
+<span class="key">"target_reasoning_engine_urn"</span>: <span class="str">"${data.target_reasoning_engine_urn}"</span>
+
+<span class="key">"execution_identity"</span>: {
+  <span class="key">"resolved_tenant"</span>: <span class="str">"${data.execution_identity.resolved_tenant}"</span>,
+  <span class="key">"spiffe_claim"</span>: <span class="str">"${data.execution_identity.spiffe_claim}"</span>,
+  <span class="key">"gcp_service_account_impersonated"</span>: <span class="str">"${data.execution_identity.gcp_service_account_impersonated}"</span>,
+  <span class="key">"identity_federation_authority"</span>: <span class="str">"${data.execution_identity.identity_federation_authority}"</span>
+}
+
+<span class="key">"analysis_result"</span>: {
+  <span class="key">"document_scanned"</span>: <span class="str">"${data.analysis_result.document_scanned}"</span>,
+  <span class="key">"executive_summary"</span>: <span class="str">"${data.analysis_result.executive_summary}"</span>,
+  <span class="key">"thinking_tokens_consumed"</span>: <span class="num">"${data.analysis_result.thinking_tokens_consumed}"</span>
+}
+
+<span style="color: #10b981; font-weight: 700;">✔ Zero-Trust Multi-Tenancy Engine Query executed flawlessly in Customer A's complete GCP partition!</span>`;
+                } else {
+                    out.innerHTML = `<span style="color: var(--rose-accent); font-weight: 700;">HTTP ${res.status} ERROR: ${JSON.stringify(data, null, 2)}</span>`;
+                }
+            } catch (err) {
+                out.innerHTML = `<span style="color: var(--rose-accent); font-weight: 700;">Network Proxy Error: ${err.message}. Verify multi_tenant_server.py is running on port 8082.</span>`;
+            } finally {
+                btn.innerHTML = `<i class="fa-solid fa-play"></i> Send Query (Context: Customer A)`;
+            }
+        }
+
+        /**
+         * Invoke Customer B (Live REST API Gateway Proxy)
+         */
+        async function invokeTenantB() {
+            const out = document.getElementById("out-b");
+            const doc = document.getElementById("doc-b").value;
+            const query = document.getElementById("query-b").value;
+            const btn = document.querySelector(".cust-b .btn-invoke");
+
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Authorizing WIF & Executing Query...`;
+            out.style.display = "block";
+            out.innerHTML = `<span style="color: var(--amber-accent);">[INFO] Intercepting Spiffy ID (spiffe://acme.com/tenant/beta-corp)...</span>\n<span style="color: var(--amber-accent);">[INFO] Impersonating active GCP SA (sa-customer-b@learn-w-me)...</span>\n<span style="color: var(--cyan-accent);">[INFO] Contacting Google Vertex AI Reasoning Engine URN (3321719735267098624)...</span>`;
+
+            try {
+                const res = await fetch("http://localhost:8082/api/v1/reasoning_engine/invoke", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        tenant: "Customer B",
+                        query: query,
+                        document: doc,
+                        target_urn: "urn:agent:projects-404109417257:projects:404109417257:locations:us-central1:aiplatform:reasoningEngines:3321719735267098624"
+                    })
+                });
+                
+                const data = await res.json();
+                
+                if (data.status === "SUCCESS") {
+                    out.innerHTML = `
+<span style="color: var(--emerald-accent);">[${data.timestamp}] HTTP ${data.http_code} OK (Live Gateway API Verified)</span>
+<span class="key">"target_reasoning_engine_urn"</span>: <span class="str">"${data.target_reasoning_engine_urn}"</span>
+
+<span class="key">"execution_identity"</span>: {
+  <span class="key">"resolved_tenant"</span>: <span class="str">"${data.execution_identity.resolved_tenant}"</span>,
+  <span class="key">"spiffe_claim"</span>: <span class="str">"${data.execution_identity.spiffe_claim}"</span>,
+  <span class="key">"gcp_service_account_impersonated"</span>: <span class="str">"${data.execution_identity.gcp_service_account_impersonated}"</span>,
+  <span class="key">"identity_federation_authority"</span>: <span class="str">"${data.execution_identity.identity_federation_authority}"</span>
+}
+
+<span class="key">"analysis_result"</span>: {
+  <span class="key">"document_scanned"</span>: <span class="str">"${data.analysis_result.document_scanned}"</span>,
+  <span class="key">"executive_summary"</span>: <span class="str">"${data.analysis_result.executive_summary}"</span>,
+  <span class="key">"thinking_tokens_consumed"</span>: <span class="num">"${data.analysis_result.thinking_tokens_consumed}"</span>
+}
+
+<span style="color: #6366f1; font-weight: 700;">✔ Zero-Trust Multi-Tenancy Engine Query executed flawlessly in Customer B's complete GCP partition!</span>`;
+                } else {
+                    out.innerHTML = `<span style="color: var(--rose-accent); font-weight: 700;">HTTP ${res.status} ERROR: ${JSON.stringify(data, null, 2)}</span>`;
+                }
+            } catch (err) {
+                out.innerHTML = `<span style="color: var(--rose-accent); font-weight: 700;">Network Proxy Error: ${err.message}. Verify multi_tenant_server.py is running on port 8082.</span>`;
+            } finally {
+                btn.innerHTML = `<i class="fa-solid fa-play"></i> Send Query (Context: Customer B)`;
+            }
+        }
+    </script>
+</body>
+</html>
