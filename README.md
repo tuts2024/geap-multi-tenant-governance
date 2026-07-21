@@ -15,6 +15,65 @@ The solution consists of two main components:
 1.  **ADK Agent (`agent/`)**: Tenant-agnostic by construction. Deployed to Vertex AI Agent Engine. It relies on Agent Identity to resolve credentials scoped to the calling session's `user_id`.
 2.  **Frontend (`frontend/`)**: A FastAPI application handling Firebase Authentication, role-based routing (Operator vs. Customer), and the OAuth redirect flow.
 
+### 🗺️ Architecture Diagram
+
+```mermaid
+graph TD
+    subgraph Users
+        CustA[Customer A]
+        CustB[Customer B]
+        Op[Operator/Admin]
+    end
+
+    subgraph "Frontend Layer (FastAPI)"
+        FE[Web Server]
+        FB[Firebase Auth]
+    end
+
+    subgraph "GCP Agent Platform (GEAP)"
+        RE[Vertex AI Reasoning Engine<br/>ADK Agent]
+        AG[Agent Gateway<br/>Egress Proxy]
+        SGP[Semantic Governance<br/>Policy Engine]
+        AI[Agent Identity<br/>Credential Manager]
+    end
+
+    subgraph "Data & External Services"
+        DB[(Datastore / BigQuery)]
+        Drive[Google Drive]
+        Ext[Other APIs]
+    end
+
+    %% Flow
+    CustA -->|Login| FB
+    CustA -->|Chat / Action| FE
+    Op -->|Admin Config| FE
+    
+    FE -->|Invoke with User_ID| RE
+    
+    RE -->|Fetch Tenant Config| DB
+    RE -->|Tool Call Proposal| SGP
+    SGP -->|Intent Allowed| RE
+    
+    RE -->|Route Egress| AG
+    
+    RE -->|Resolve Creds for User_ID| AI
+    AI -->|OAuth Token| RE
+    
+    RE -->|API Call with Token| Drive
+    RE -->|API Call| Ext
+
+    %% Styling
+    classDef gcp fill:#4285F4,stroke:#3b78e7,color:white;
+    classDef user fill:#E1BEE7,stroke:#8E24AA,color:black;
+    classDef ext fill:#FFF9C4,stroke:#FBC02D,color:black;
+    classDef fe fill:#C8E6C9,stroke:#4CAF50,color:black;
+    
+    class RE,AG,SGP,AI,DB gcp;
+    class CustA,CustB,Op user;
+    class Drive,Ext ext;
+    class FE,FB fe;
+```
+
 ---
 
 ## 📋 Prerequisites
