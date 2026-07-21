@@ -25,6 +25,10 @@ graph TD
         Op[Operator Admin]
     end
 
+    subgraph DevTools[Dev Tools]
+        CLI[Agents CLI]
+    end
+
     subgraph Frontend_Layer[Frontend Layer FastAPI]
         FE[Web Server]
         FB[Firebase Auth]
@@ -35,6 +39,7 @@ graph TD
         AG[Agent Gateway]
         SGP[Semantic Governance Policy Engine]
         AI[Agent Identity]
+        AR[Agent Registry]
     end
 
     subgraph Data_Services[Data and External Services]
@@ -53,11 +58,15 @@ graph TD
     CustB --> FE
     Op --> FE
     
+    Op --> CLI
+    CLI --> AR
+    AR --> RE
+    
     FE --> RE
     
     RE --> DB
-    RE --> SGP
-    SGP --> RE
+    AR --> SGP
+    SGP --> AR
     
     RE --> AG
     
