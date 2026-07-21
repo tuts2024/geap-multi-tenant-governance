@@ -40,12 +40,17 @@ graph TD
     subgraph Data_Services[Data and External Services]
         DB[Datastore / BigQuery]
         Drive[Google Drive]
+        Conf[Confluence]
         Ext[Other APIs]
     end
 
     %% Flow
     CustA --> FB
+    CustB --> FB
+    Op --> FB
+
     CustA --> FE
+    CustB --> FE
     Op --> FE
     
     FE --> RE
@@ -60,6 +65,7 @@ graph TD
     AI --> RE
     
     RE --> Drive
+    RE --> Conf
     RE --> Ext
 ```
 
