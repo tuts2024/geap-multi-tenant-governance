@@ -1,2 +1,0 @@
-/usr/local/google/home/ntuteja/acme-demo-jul12/agent/agent/.venv/lib/python3.13/site-packages/google/adk/features/_feature_decorator.py:72: UserWarning: [EXPERIMENTAL] feature FeatureName.PLUGGABLE_AUTH is enabled.
-  check_feature_enabled()

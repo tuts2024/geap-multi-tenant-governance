@@ -646,7 +646,7 @@
             <div class="p-group">
                 <i class="fa-solid fa-user-tie" style="color: var(--emerald-accent); font-size: 18px;"></i>
                 <span class="p-label">Platform Operator Identity:</span>
-                <span class="p-value">admin@ntuteja.altostrat.com</span>
+                <span class="p-value">admin@example.com</span>
             </div>
         </div>
 
@@ -768,7 +768,7 @@
             </div>
 
             <p style="font-size: 14px; color: var(--text-muted); line-height: 1.6;">
-                To securely orchestrate identity impersonation and FinOps monitoring on behalf of <strong style="color: #fff;">admin@ntuteja.altostrat.com</strong>, the platform injects a dedicated cryptographic token into the underlying Cloud Identity WIF authorizer pool.
+                To securely orchestrate identity impersonation and FinOps monitoring on behalf of <strong style="color: #fff;">admin@example.com</strong>, the platform injects a dedicated cryptographic token into the underlying Cloud Identity WIF authorizer pool.
             </p>
 
             <div class="secret-toggle-row">
@@ -850,7 +850,7 @@
             consoleBox.style.display = "block";
             consoleBox.innerHTML = `
 <span style="color: var(--primary-color);">[${timestamp}] INFO:</span> ⚡ Intercepting incoming AI Copilot query from entity: <strong>"${tenant}"</strong>
-<span style="color: var(--primary-color);">[${timestamp}] INFO:</span> ✔ Validating Gateway Execution Token (Authority: admin@ntuteja.altostrat.com)...
+<span style="color: var(--primary-color);">[${timestamp}] INFO:</span> ✔ Validating Gateway Execution Token (Authority: admin@example.com)...
 <span style="color: var(--primary-color);">[${timestamp}] INFO:</span> ✔ Cryptographic JWT caller claim resolved successfully: <span style="color: var(--amber-accent);">${spiffe}</span>
 <span style="color: var(--primary-color);">[${timestamp}] INFO:</span> 🔒 Applying Workload Identity Federation Impersonation Binding...
 <span style="color: var(--emerald-accent);">[${timestamp}] SUCCESS:</span> Runtime execution thread securely bound to GCP Service Account:

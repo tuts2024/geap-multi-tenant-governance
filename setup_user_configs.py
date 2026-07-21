@@ -9,43 +9,43 @@ client = datastore.Client()
 users = [
     {
         "id": "HfV08Bu3n4YPXgrPvAms1i9RzwK2", # Customer A Firebase UID (Old?)
-        "email": "customera@ntuteja.altostrat.com",
+        "email": "customera@example.com",
         "tenant_name": "Customer A",
         "auth_strategy": "DWD",
         "dwd_service_account": "customer-a-tenant@acxiom-425322.iam.gserviceaccount.com"
     },
     {
         "id": "lKK7PPM62QYpdtCzrqrDcEm1aNs1", # Customer A Firebase UID (Current)
-        "email": "customera@ntuteja.altostrat.com",
+        "email": "customera@example.com",
         "tenant_name": "Customer A",
         "auth_strategy": "DWD",
         "dwd_service_account": "customer-a-tenant@acxiom-425322.iam.gserviceaccount.com"
     },
     {
         "id": "loWmDyexCjMFhGkqV7MPZYwMnEf1", # Customer B Firebase UID (Old?)
-        "email": "customerb@ntuteja.altostrat.com",
+        "email": "customerb@example.com",
         "tenant_name": "Customer B",
         "auth_strategy": "3LO",
         "dwd_service_account": None
     },
     {
         "id": "JqK87Kh2tUVntVvSurw33gdqJZj2", # Customer B Firebase UID (Current)
-        "email": "customerb@ntuteja.altostrat.com",
+        "email": "customerb@example.com",
         "tenant_name": "Customer B",
         "auth_strategy": "3LO",
         "dwd_service_account": None
     },
     # Also creating records keyed by email just in case the identifier flips
     {
-        "id": "customera@ntuteja.altostrat.com",
-        "email": "customera@ntuteja.altostrat.com",
+        "id": "customera@example.com",
+        "email": "customera@example.com",
         "tenant_name": "Customer A",
         "auth_strategy": "DWD",
         "dwd_service_account": "customer-a-tenant@acxiom-425322.iam.gserviceaccount.com"
     },
     {
-        "id": "customerb@ntuteja.altostrat.com",
-        "email": "customerb@ntuteja.altostrat.com",
+        "id": "customerb@example.com",
+        "email": "customerb@example.com",
         "tenant_name": "Customer B",
         "auth_strategy": "3LO",
         "dwd_service_account": None
