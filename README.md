@@ -50,29 +50,25 @@ graph TD
     end
 
     %% Flow
-    CustA --> FB
-    CustB --> FB
-    Op --> FB
-
     CustA --> FE
     CustB --> FE
     Op --> FE
     
+    FE --> FB
+    
     Op --> CLI
     CLI --> AR
-    AR --> RE
     
     FE --> RE
     
-    RE --> DB
-    AR --> SGP
-    SGP --> AR
-    
+    %% GEAP Internal
+    AR --> RE
+    AR <--> SGP
     RE --> AG
+    RE <--> AI
     
-    RE --> AI
-    AI --> RE
-    
+    %% Data / External
+    RE --> DB
     RE --> Drive
     RE --> Conf
     RE --> Ext
